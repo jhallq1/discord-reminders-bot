@@ -2,7 +2,7 @@
   "name": "discord-reminders-bot",
   "version": "1.0.0",
   "description": "Reminders Bot for Discord",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
     "test": "spec"
   },
