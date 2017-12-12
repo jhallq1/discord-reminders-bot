@@ -1,0 +1,22 @@
+{
+  "name": "discord-reminders-bot",
+  "version": "1.0.0",
+  "description": "Reminders Bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnhallquist/discord-reminders-bot.git"
+  },
+  "author": "Jennifer Hallquist",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jnhallquist/discord-reminders-bot/issues"
+  },
+  "homepage": "https://github.com/jnhallquist/discord-reminders-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}
