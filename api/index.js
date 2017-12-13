@@ -1,15 +1,15 @@
 const config = require('./config.json')
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const bot = new Discord.Client();
 
-client.on('ready', () => {
+bot.on('ready', () => {
   console.log('I am ready!');
 });
 
-client.on('message', message => {
+bot.on('message', message => {
   if (message.content === 'ping') {
     message.reply('pong');
   }
 });
 
-client.login(config.token);
+bot.login(config.token);
