@@ -1,26 +1,26 @@
-const Commando = require('discord.js-commando');
+const { CommandoClient } = require('discord.js-commando');
 const Client = require('pg');
 const path = require('path');
 
 const config = require('./config.json');
 
-const bot = new Commando.Client({
+const bot = new CommandoClient({
     owner: config.owner,
-    commandPrefix: 'rbot'
-});
-
-bot.on('ready', () => {
-  console.log('I am ready!');
-});
-
-bot.on('message', message => {
-  if (message.content === 'ping') {
-    message.reply('pong');
-  }
+    commandPrefix: 'rbot',
+    disableEveryone: true
 });
 
 bot.registry
+    .registerGroups([
+      ['reminders', 'Reminders']
+    ])
     .registerDefaults()
     .registerCommandsIn(path.join(__dirname, 'commands'));
+
+
+bot.on('ready', () => {
+  console.log('I am ready!');
+  bot.user.setGame('Game');
+});
 
 bot.login(config.token);
