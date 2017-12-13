@@ -6,8 +6,8 @@
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "comma-dangle": [2, "never"],
     "comma-style": [2, "first", {
-      exceptions: {
-        ArrayExpression: true, ObjectExpression: true
+      "exceptions": {
+        "ArrayExpression": true, "ObjectExpression": true
       }
     }],
     "complexity": [2, 6],
