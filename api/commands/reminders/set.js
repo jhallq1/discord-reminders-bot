@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const chrono = require('chrono-node');
+const moment = require('moment');
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
@@ -31,6 +32,7 @@ module.exports = class SetCommand extends Command {
   }
 
   run(msg, { target, body, datetime }) {
-    return msg.say(target + ' will be reminded: "' + body + '" at ' + chrono.parseDate(datetime));
+    return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
+      "M/D/YYYY h:mm a") + ': ' + target + ' will be reminded "' + body + '" ');
   }
 };
