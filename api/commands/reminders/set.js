@@ -4,6 +4,7 @@ module.exports = class SetCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'set',
+      aliases: ['set-reminder', 'create-reminder', 'add-reminder'],
       group: 'reminders',
       memberName: 'set',
       description: 'Set a new reminder.',
