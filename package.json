@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jnhallquist/discord-reminders-bot#readme",
   "dependencies": {
     "discord.js": "^11.2.1",
+    "discord.js-commando": "^0.9.0",
     "pg": "^7.4.0"
   }
 }

@@ -1,15 +1,13 @@
 const config = require('./config.json')
-const Discord = require('discord.js');
-const bot = new Discord.Client();
+const Commando = require('discord.js-commando');
+const Client = require('pg');
+
+const bot = new Commando.Client({
+    owner: '388398975516016640'
+});
 
 bot.on('ready', () => {
   console.log('I am ready!');
-});
-
-bot.on('message', message => {
-  if (message.content === 'ping') {
-    message.reply('pong');
-  }
 });
 
 bot.login(config.token);
