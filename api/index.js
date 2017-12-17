@@ -3,6 +3,7 @@ const Client = require('pg');
 const path = require('path');
 
 const config = require('./config.json');
+const node_scheduler = require('./scheduler.js');
 
 const bot = new CommandoClient({
     owner: config.owner,
@@ -24,3 +25,7 @@ bot.on('ready', () => {
 });
 
 bot.login(config.token);
+
+(function(){
+  node_scheduler.worker.init();
+})();
