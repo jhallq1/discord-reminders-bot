@@ -34,5 +34,5 @@ module.exports = class SetCommand extends Command {
   run(msg, { target, body, datetime }) {
     return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
       "M/D/YYYY h:mm a") + ': ' + target + ' will be reminded "' + body + '" ');
-  }
+  };
 };

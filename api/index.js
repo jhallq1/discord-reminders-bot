@@ -1,5 +1,4 @@
 const { CommandoClient } = require('discord.js-commando');
-const Client = require('pg');
 const path = require('path');
 
 const config = require('./config.json');
