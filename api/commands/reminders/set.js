@@ -1,6 +1,9 @@
 const { Command } = require('discord.js-commando');
 const chrono = require('chrono-node');
 const moment = require('moment');
+const kue = require('kue');
+
+const queue = kue.createQueue();
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
@@ -32,7 +35,24 @@ module.exports = class SetCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
-    return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
-      "M/D/YYYY h:mm a") + ': ' + target + ' will be reminded "' + content + '" ');
+    //TODO return error if chrono datetime > current datetime
+    let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -  moment().valueOf();
+
+    let job = queue.create('reminder', {
+      target: target.toString(),
+      content: content.toString()
+    }).delay(millisecondsTillReminder).save(function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
+          "M/D/YYYY h:mm a") + ', ' + target + ' will be reminded "' + content + '" ');
+      }
+    });
+
+    queue.process('reminder', function(job, done) {
+      msg.say(job.data.target + " " + job.data.content);
+      done();
+    });
   };
 };
