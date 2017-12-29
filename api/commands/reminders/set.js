@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
 const chrono = require('chrono-node');
 const moment = require('moment');
-const db = require('../../../models/index.js');
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
@@ -33,16 +32,7 @@ module.exports = class SetCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
-    console.log(chrono.parse(datetime)[0].ref);
-
-    let statement = "INSERT INTO reminders (target, content, datetime) VALUES (" + target.username  + ", " + content + ", " + chrono.parse(datetime)[0].ref + ";";
-
-    // let statement = `INSERT INTO reminders (target, content, datetime) VALUES ('${target.username}', '${content}', chrono.parse(datetime)[0].ref);`;
-    db.sequelize.query(statement).then(res => {
-      console.log('Inserted new row');
-
-      return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
-        "M/D/YYYY h:mm a") + ': ' + target + ' will be reminded "' + content + '" ');
-    });
+    return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
+      "M/D/YYYY h:mm a") + ': ' + target + ' will be reminded "' + content + '" ');
   };
 };
