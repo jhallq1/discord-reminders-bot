@@ -35,9 +35,12 @@ module.exports = class SetCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
-    //TODO return error if chrono datetime > current datetime
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -  moment().valueOf();
 
+    if (millisecondsTillReminder < 0) {
+      return msg.say('Error! You cannot schedule a reminder for the past.');
+    }
+    
     let job = queue.create('reminder', {
       target: target.toString(),
       content: content.toString()
