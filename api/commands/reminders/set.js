@@ -5,6 +5,8 @@ const kue = require('kue');
 
 const queue = kue.createQueue();
 
+let bot = require('../../bot.js');
+
 module.exports = class SetCommand extends Command {
   constructor(client) {
     super(client, {
@@ -34,6 +36,8 @@ module.exports = class SetCommand extends Command {
     });
   }
 
+// TODO: send user message when chronos fails to parse time
+
   run(msg, { target, content, datetime }) {
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -  moment().valueOf();
 
@@ -42,19 +46,20 @@ module.exports = class SetCommand extends Command {
     }
 
     let job = queue.create('reminder', {
-      target: target.toString(),
-      content: content.toString()
+      target_id: target.id,
+      content: content
     }).delay(millisecondsTillReminder).save(function(err) {
-      if (err) {
-        console.log(err);
-      } else {
-        return msg.say(moment(chrono.parseDate(datetime)).calendar(moment.now(),
+      if (!err) {
+        return msg.direct(moment(chrono.parseDate(datetime)).calendar(moment.now(),
           "M/D/YYYY h:mm a") + ', ' + target + ' will be reminded "' + content + '" ');
       }
     });
 
     queue.process('reminder', function(job, done) {
-      msg.say(job.data.target + " " + job.data.content);
+      bot.fetchUser(job.data.target_id).then(user => {
+        user.send(job.data.content);
+      });
+
       done();
     });
   };

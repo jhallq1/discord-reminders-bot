@@ -1,12 +1,6 @@
-const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
+const bot = require('./bot.js');
 const config = require('./config.json');
-
-const bot = new CommandoClient({
-    owner: config.owner,
-    commandPrefix: 'rbot',
-    disableEveryone: true
-});
 
 bot.registry
     .registerGroups([
