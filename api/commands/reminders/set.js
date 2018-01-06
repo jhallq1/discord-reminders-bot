@@ -20,7 +20,10 @@ module.exports = class SetCommand extends Command {
       group: 'reminders',
       memberName: 'set',
       description: 'Set a new reminder.',
-      examples: ['set "Buy milk" tomorrow'],
+      examples: ['rbot set @user "Buy milk" tomorrow',
+        'rbot set @user "Pick up the dog" in 4 hours',
+        'rbot set @user take the trash out at 6pm',
+        'rbot set @user renew driver license in 2 weeks'],
       args: [
         {
           key: 'target',
