@@ -36,9 +36,11 @@ module.exports = class SetCommand extends Command {
     });
   }
 
-// TODO: send user message when chronos fails to parse time
-
   run(msg, { target, content, datetime }) {
+    if (!chrono.parseDate(datetime)) {
+      return msg.say('Error! Please use the `rbot help set` command to view accepted datetime formats.');
+    }
+
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -  moment().valueOf();
 
     if (millisecondsTillReminder < 0) {
