@@ -1,6 +1,7 @@
 # Discord Reminders Bot
-This is a bot for use with the Discord voice and text chat platform. When added
-to a Discord server, users will be able to set and receive reminders.
+This is a bot for use with the [Discord](https://discordapp.com/) voice and
+text chat platform. When added to a Discord server, users will be able to set
+and receive reminders.
 
 ## Features
 - [x] Set and receive reminders for self or other users
