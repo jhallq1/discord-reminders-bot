@@ -38,10 +38,12 @@ module.exports = class SetCommand extends Command {
 
   run(msg, { target, content, datetime }) {
     if (!chrono.parseDate(datetime)) {
-      return msg.say('Error! Please use the `rbot help set` command to view accepted datetime formats.');
+      return msg.say('Error! Please use the `rbot help set` command to view' +
+      ' accepted datetime formats.');
     }
 
-    let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -  moment().valueOf();
+    let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
+      moment().valueOf();
 
     if (millisecondsTillReminder < 0) {
       return msg.say('Error! You cannot schedule a reminder for the past.');
@@ -52,8 +54,9 @@ module.exports = class SetCommand extends Command {
       content: content
     }).delay(millisecondsTillReminder).save(function(err) {
       if (!err) {
-        return msg.direct(moment(chrono.parseDate(datetime)).calendar(moment.now(),
-          "M/D/YYYY h:mm a") + ', ' + target + ' will be reminded "' + content + '" ');
+        return msg.direct(moment(chrono.parseDate(datetime)).calendar(
+          moment.now(), "M/D/YYYY h:mm a") + ', ' + target +
+          ' will be reminded "' + content + '" ');
       }
     });
 
