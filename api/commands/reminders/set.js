@@ -6,6 +6,12 @@ const bot = require('../../bot.js');
 
 const queue = kue.createQueue();
 
+const errors = {
+  invalid_datetime_format: 'Error! Please use the `rbot help set` command' +
+    ' to view accepted datetime formats.',
+  past_time: 'Error! You cannot schedule a reminder for the past.'
+}
+
 module.exports = class SetCommand extends Command {
   constructor(client) {
     super(client, {
@@ -37,15 +43,14 @@ module.exports = class SetCommand extends Command {
 
   run(msg, { target, content, datetime }) {
     if (!chrono.parseDate(datetime)) {
-      return msg.say('Error! Please use the `rbot help set` command to view' +
-      ' accepted datetime formats.');
+      return msg.say(errors.invalid_datetime_format);
     }
 
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
       moment().valueOf();
 
     if (millisecondsTillReminder < 0) {
-      return msg.say('Error! You cannot schedule a reminder for the past.');
+      return msg.say(errors.past_time);
     }
 
     let job = queue.create('reminder', {
