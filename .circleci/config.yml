@@ -5,13 +5,11 @@
 version: 2
 jobs:
   build:
-    machine:
+    docker:
       # specify the version you desire here
-      - image: circleci/node:8.80
+      - image: circleci/node:latest
 
       # Specify service dependencies here if necessary
-      services:
-        - redis
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
@@ -28,7 +26,10 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm install
+      - run: 
+        apt-get update && apt-get install -y redis-tools
+          echo "CONFIG SET save ''" | redis-cli -x
+        npm install
 
       - save_cache:
           paths:
