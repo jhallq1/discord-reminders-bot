@@ -12,7 +12,7 @@ bot.registry
 
 bot.on('ready', () => {
   console.log('I am ready!');
-  bot.user.setGame('Game');
+  bot.user.setGame('Reminding');
 });
 
 bot.login(config.token);
