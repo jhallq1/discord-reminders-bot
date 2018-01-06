@@ -4,7 +4,7 @@
   "description": "Reminders Bot for Discord",
   "main": "api/index.js",
   "scripts": {
-    "test": "spec"
+    "spec": "mocha"
   },
   "repository": {
     "type": "git",
