@@ -2,10 +2,9 @@ const { Command } = require('discord.js-commando');
 const chrono = require('chrono-node');
 const moment = require('moment');
 const kue = require('kue');
+const bot = require('../../bot.js');
 
 const queue = kue.createQueue();
-
-let bot = require('../../bot.js');
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
