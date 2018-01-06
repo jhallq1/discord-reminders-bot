@@ -26,10 +26,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: 
-        apt-get update && apt-get install -y redis-tools
-          echo "CONFIG SET save ''" | redis-cli -x
-        npm install
+      - run:
+        - npm install
 
       - save_cache:
           paths:
