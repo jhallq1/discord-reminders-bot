@@ -5,12 +5,13 @@ const kue = require('kue');
 const bot = require('../../bot.js');
 const keys = require('../../keys.json');
 
-const redis = {
-  "port": keys.redisPort,
-  "host": keys.redisHost,
-  "auth": keys.redisKey
-}
-const queue = kue.createQueue( {redis: redis} );
+const queue = kue.createQueue({
+  redis: {
+    "port": keys.redisPort,
+    "host": keys.redisHost,
+    "auth": keys.redisKey
+  }
+});
 
 const errors = {
   invalid_datetime_format: 'Error! Please use the `rbot help set` command' +
