@@ -1,8 +1,8 @@
 const { CommandoClient } = require('discord.js-commando');
-const config = require('./config.json');
+const keys = require('./keys.json');
 
 module.exports = new CommandoClient({
-    owner: config.owner,
+    owner: keys.owner,
     commandPrefix: 'rbot',
     disableEveryone: true
 });
