@@ -1,16 +1,12 @@
-'use strict';
-
 const redis = require('redis');
 const http = require('http');
-const nconf = require('nconf');
-
-nconf.argv().env().file('keys.json');
+const keys = require('./keys.json');
 
 const client = redis.createClient(
-  nconf.get('redisPort') || '6379',
-  nconf.get('redisHost') || '127.0.0.1',
+  keys.redisPort || '6379',
+  keys.redisHost || '127.0.0.1',
   {
-    'auth_pass': nconf.get('redisKey'),
+    'auth_pass': keys.redisKey,
     'return_buffers': true
   }
 ).on('error', (err) => console.error('ERR:REDIS:', err));
