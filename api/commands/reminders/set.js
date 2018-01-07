@@ -3,8 +3,14 @@ const chrono = require('chrono-node');
 const moment = require('moment');
 const kue = require('kue');
 const bot = require('../../bot.js');
+const keys = require('../../keys.json');
 
-const queue = kue.createQueue();
+const redis = {
+  "port": keys.redisPort,
+  "host": keys.redisHost,
+  "auth": keys.redisKey
+}
+const queue = kue.createQueue( {redis: redis} );
 
 const errors = {
   invalid_datetime_format: 'Error! Please use the `rbot help set` command' +
