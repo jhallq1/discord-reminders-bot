@@ -1,6 +1,6 @@
 const path = require('path');
 const bot = require('./bot.js');
-const config = require('./config.json');
+const keys = require('./keys.json');
 
 bot.registry
     .registerGroups([
@@ -15,4 +15,4 @@ bot.on('ready', () => {
   bot.user.setGame('Reminding');
 });
 
-bot.login(config.token);
+bot.login(keys.token);
