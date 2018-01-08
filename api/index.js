@@ -10,7 +10,7 @@ bot.registry
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 
-bot.on('ready', () => {
+bot.once('ready', () => {
   console.log('I am ready!');
   bot.user.setGame('Reminding');
 });
