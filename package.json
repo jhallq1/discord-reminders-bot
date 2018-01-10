@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Reminders Bot for Discord",
   "main": "api/index.js",
-  "scripts": {
-    "start": "node api/index.js"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jnhallquist/discord-reminders-bot.git"
