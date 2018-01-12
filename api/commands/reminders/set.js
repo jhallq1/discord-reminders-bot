@@ -13,6 +13,35 @@ const queue = kue.createQueue({
   }
 });
 
+const commands = {
+  name: 'set',
+  aliases: ['set-reminder', 'create-reminder', 'add-reminder'],
+  group: 'reminders',
+  memberName: 'set',
+  description: 'Set a new reminder.',
+  examples: ['rbot set @user "Buy milk" tomorrow',
+    'rbot set @user "Pick up the dog" in 4 hours',
+    'rbot set @user take the trash out at 6pm',
+    'rbot set @user renew driver license in 2 weeks'],
+  args: [
+    {
+      key: 'target',
+      prompt: 'Which user do you want to receive this reminder?',
+      type: 'user'
+    },
+    {
+      key: 'content',
+      prompt: 'What is the reminder?',
+      type: 'string'
+    },
+    {
+      key: 'datetime',
+      prompt: 'When would you like this reminder to go off?',
+      type: 'string'
+    }
+  ]
+}
+
 const errors = {
   invalid_datetime_format: 'Error! Please use the `rbot help set` command' +
     ' to view accepted datetime formats.',
@@ -21,34 +50,7 @@ const errors = {
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
-    super(client, {
-      name: 'set',
-      aliases: ['set-reminder', 'create-reminder', 'add-reminder'],
-      group: 'reminders',
-      memberName: 'set',
-      description: 'Set a new reminder.',
-      examples: ['rbot set @user "Buy milk" tomorrow',
-        'rbot set @user "Pick up the dog" in 4 hours',
-        'rbot set @user take the trash out at 6pm',
-        'rbot set @user renew driver license in 2 weeks'],
-      args: [
-        {
-          key: 'target',
-          prompt: 'Which user do you want to receive this reminder?',
-          type: 'user'
-        },
-        {
-          key: 'content',
-          prompt: 'What is the reminder?',
-          type: 'string'
-        },
-        {
-          key: 'datetime',
-          prompt: 'When would you like this reminder to go off?',
-          type: 'string'
-        }
-      ]
-    });
+    super(client, commands);
   }
 
   run(msg, { target, content, datetime }) {
