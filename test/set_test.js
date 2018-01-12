@@ -23,7 +23,7 @@ describe('#run', () => {
                         msg, 
                         { target: target, content: content, datetime: time }
                     )
-                ).to.match(/view accepted datetime formats/)
+                ).to.match(/view accepted datetime formats/);
             });
         });
 
@@ -36,7 +36,7 @@ describe('#run', () => {
                         msg, 
                         { target: target, content: content, datetime: time }
                     )
-                ).to.eq('Error! You cannot schedule a reminder for the past.')
+                ).to.eq('Error! You cannot schedule a reminder for the past.');
             });
         });
     });
