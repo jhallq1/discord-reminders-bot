@@ -4,6 +4,7 @@ const moment = require('moment');
 const kue = require('kue');
 const bot = require('../../bot.js');
 const keys = require('../../keys.json');
+const exceptions = require('../../util/exceptions.json');
 
 const queue = kue.createQueue({
   redis: {
@@ -13,7 +14,7 @@ const queue = kue.createQueue({
   }
 });
 
-const commands = {
+const command = {
   name: 'set',
   aliases: ['set-reminder', 'create-reminder', 'add-reminder'],
   group: 'reminders',
@@ -42,27 +43,21 @@ const commands = {
   ]
 }
 
-const errors = {
-  invalid_datetime_format: 'Error! Please use the `rbot help set` command' +
-    ' to view accepted datetime formats.',
-  past_time: 'Error! You cannot schedule a reminder for the past.'
-}
-
 module.exports = class SetCommand extends Command {
   constructor(client) {
-    super(client, commands);
+    super(client, command);
   }
 
   run(msg, { target, content, datetime }) {
     if (!chrono.parseDate(datetime)) {
-      return msg.say(errors.invalid_datetime_format);
+      return msg.say(exceptions.invalid_datetime_format);
     }
 
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
       moment().valueOf();
 
     if (millisecondsTillReminder < 0) {
-      return msg.say(errors.past_time);
+      return msg.say(exceptions.past_time);
     }
 
     let job = queue.create('reminder', {

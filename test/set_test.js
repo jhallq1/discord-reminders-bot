@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire').noCallThru();
 const expect     = require('chai').expect;
 const msg        = require('./stubs/message.js');
+const exceptions = require('../api/util/exceptions.json')
 const SetCommand = proxyquire(
     '../api/commands/reminders/set.js',
     { 
@@ -23,7 +24,7 @@ describe('#run', () => {
                         msg, 
                         { target: target, content: content, datetime: time }
                     )
-                ).to.match(/view accepted datetime formats/);
+                ).to.eq(exceptions.invalid_datetime_format);
             });
         });
 
@@ -36,7 +37,7 @@ describe('#run', () => {
                         msg, 
                         { target: target, content: content, datetime: time }
                     )
-                ).to.eq('Error! You cannot schedule a reminder for the past.');
+                ).to.eq(exceptions.past_time);
             });
         });
     });
