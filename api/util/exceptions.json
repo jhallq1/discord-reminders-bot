@@ -1,0 +1,4 @@
+{
+  "invalid_datetime_format": "Error! Please use the `rbot help set` command to view accepted datetime formats.",
+  "past_time": "Error! You cannot schedule a reminder for the past."
+}
