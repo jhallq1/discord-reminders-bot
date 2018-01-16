@@ -33,7 +33,5 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-    # Tests
-    test:
-      override:
-        - npm run test
+      # Run tests
+      - run: npm test
