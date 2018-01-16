@@ -1,7 +1,16 @@
 const proxyquire = require('proxyquire').noCallThru();
 const expect     = require('chai').expect;
 const msg        = require('./stubs/message.js');
-const exceptions = require('../api/util/exceptions.json')
+const exceptions = require('../api/util/exceptions.json');
+
+const keys = proxyquire(
+    '../api/keys.json',
+    {
+        'keys': require('./stubs/fakekeys.json'),
+        '@global': true
+    }
+);
+
 const RemindCommand = proxyquire(
     '../api/commands/reminders/remind.js',
     {
