@@ -1,10 +1,10 @@
 const { Command } = require('discord.js-commando');
-const chrono = require('chrono-node');
-const moment = require('moment');
-const kue = require('kue');
-const bot = require('../../bot.js');
-const keys = require('../../keys.json');
-const exceptions = require('../../util/exceptions.json');
+const chrono      = require('chrono-node');
+const moment      = require('moment');
+const kue         = require('kue');
+const bot         = require('../../bot.js');
+const keys        = require('../../keys.json');
+const exceptions  = require('../../util/exceptions.json');
 
 const queue = kue.createQueue({
   redis: {
@@ -15,15 +15,14 @@ const queue = kue.createQueue({
 });
 
 const command = {
-  name: 'set',
-  aliases: ['set-reminder', 'create-reminder', 'add-reminder'],
+  name: 'remind',
   group: 'reminders',
-  memberName: 'set',
+  memberName: 'remind',
   description: 'Set a new reminder.',
-  examples: ['rbot set @user "Buy milk" tomorrow',
-    'rbot set @user "Pick up the dog" in 4 hours',
-    'rbot set @user take the trash out at 6pm',
-    'rbot set @user renew driver license in 2 weeks'],
+  examples: ['rbot remind @user "Buy milk" tomorrow',
+    'rbot remind @user "Pick up the dog" in 4 hours',
+    'rbot remind @user take the trash out at 6pm',
+    'rbot remind @user renew driver license in 2 weeks'],
   args: [
     {
       key: 'target',
@@ -41,9 +40,9 @@ const command = {
       type: 'string'
     }
   ]
-}
+};
 
-module.exports = class SetCommand extends Command {
+module.exports = class RemindCommand extends Command {
   constructor(client) {
     super(client, command);
   }
