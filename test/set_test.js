@@ -2,9 +2,9 @@ const proxyquire = require('proxyquire').noCallThru();
 const expect     = require('chai').expect;
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json')
-const SetCommand = proxyquire(
-    '../api/commands/reminders/set.js',
-    { 
+const RemindCommand = proxyquire(
+    '../api/commands/reminders/remind.js',
+    {
         'discord.js-commando': require('./stubs/Command.js'),
         '@global': true
     }
@@ -20,8 +20,8 @@ describe('#run', () => {
 
             it('throws invalid format exception', () => {
                 expect(
-                    new SetCommand({}).run(
-                        msg, 
+                    new RemindCommand({}).run(
+                        msg,
                         { target: target, content: content, datetime: time }
                     )
                 ).to.eq(exceptions.invalid_datetime_format);
@@ -33,8 +33,8 @@ describe('#run', () => {
 
             it('throws time pasted exception', () => {
                 expect(
-                    new SetCommand({}).run(
-                        msg, 
+                    new RemindCommand({}).run(
+                        msg,
                         { target: target, content: content, datetime: time }
                     )
                 ).to.eq(exceptions.past_time);
