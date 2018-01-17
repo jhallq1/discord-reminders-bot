@@ -1,5 +1,6 @@
 const path = require('path');
-const bot = require('./bot.js');
+const bot  = require('./bot.js');
+const db   = require('./db/index.js');
 const keys = require('./keys.json');
 
 bot.registry
