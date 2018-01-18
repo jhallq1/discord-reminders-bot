@@ -6,6 +6,7 @@ const bot         = require('../../bot.js');
 const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
+const parseDate   = require('../../util/parseDate.js');
 
 const queue = kue.createQueue({
   redis: {
@@ -52,29 +53,30 @@ module.exports = class RemindCommand extends Command {
     if (!chrono.parseDate(datetime)) {
       return msg.say(exceptions.invalid_datetime_format);
     }
-    
-    let scheduledTime = moment(chrono.parseDate(datetime)).calendar(
-      moment.now(), "M/D/YYYY h:mm a");
 
-    let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
-      moment().valueOf();
-
-    if (millisecondsTillReminder < 0) {
+    if (moment(chrono.parseDate(datetime)).diff(moment()) < 0) {
       return msg.say(exceptions.past_time);
     }
 
     return selectTz([target.username, target.discriminator])
-    .then(res => {
-      if (!res) {
+    .then(timezone => {
+      if (!timezone) {
         return msg.say(exceptions.timezone_not_set);
       } else {
+        let timeWithOffset = parseDate(datetime, timezone);
+
+        let formattedTime = moment(chrono.parseDate(timeWithOffset)).calendar(
+          moment.now(), "M/D/YYYY h:mm a");
+
+        let delayAmt = moment(timeWithOffset).valueOf() - moment().valueOf();
+
         return queue.create('reminder', {
           target_id: target.id,
           content: content
-        }).delay(millisecondsTillReminder).save(function(err) {
+        }).delay(delayAmt).save(function(err) {
           if (!err) {
             return msg.direct(
-              `${scheduledTime}, ${target} will be reminded "${content}"`
+              `${formattedTime}, ${target} will be reminded "${content}"`
             );
           }
         })
