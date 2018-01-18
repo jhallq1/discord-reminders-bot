@@ -1,0 +1,12 @@
+{
+    "owner":      "a",
+    "token":      "b",
+    "redisHost":  "c",
+    "redisPort":  "d",
+    "redisKey":   "e",
+    "dbHost":     "localhost",
+    "dbPort":     "5432",
+    "dbUser":     "h",
+    "dbPassword": "i",
+    "dbDatabase": "j"
+}
