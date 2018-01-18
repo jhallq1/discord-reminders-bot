@@ -12,3 +12,6 @@ plugins:
     - "test/**"
 exclude_patterns:
 - "node_modules/**"
+checks:
+  method-lines:
+    enabled: false
