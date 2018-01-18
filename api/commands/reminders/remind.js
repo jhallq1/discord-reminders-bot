@@ -52,6 +52,7 @@ module.exports = class RemindCommand extends Command {
     if (!chrono.parseDate(datetime)) {
       return msg.say(exceptions.invalid_datetime_format);
     }
+    
     let scheduledTime = moment(chrono.parseDate(datetime)).calendar(
       moment.now(), "M/D/YYYY h:mm a");
 
