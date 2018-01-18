@@ -17,3 +17,11 @@ bot.once('ready', () => {
 });
 
 bot.login(keys.token);
+
+db.connect((err) => {
+  if (err) {
+    console.error('Connection error', err.stack);
+  } else {
+    console.log('Connected to db');
+  }
+});

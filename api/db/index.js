@@ -6,4 +6,5 @@ module.exports = new Client({
   port: keys.db_port,
   user: keys.db_user,
   password: keys.db_password,
+  database: keys.db_database
 });
