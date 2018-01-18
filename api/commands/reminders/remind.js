@@ -5,6 +5,7 @@ const kue         = require('kue');
 const bot         = require('../../bot.js');
 const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
+const selectTz    = require('../../../db/queries/selectTimezone.js');
 
 const queue = kue.createQueue({
   redis: {
@@ -51,6 +52,9 @@ module.exports = class RemindCommand extends Command {
     if (!chrono.parseDate(datetime)) {
       return msg.say(exceptions.invalid_datetime_format);
     }
+    
+    let scheduledTime = moment(chrono.parseDate(datetime)).calendar(
+      moment.now(), "M/D/YYYY h:mm a");
 
     let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
       moment().valueOf();
@@ -59,23 +63,31 @@ module.exports = class RemindCommand extends Command {
       return msg.say(exceptions.past_time);
     }
 
-    let job = queue.create('reminder', {
-      target_id: target.id,
-      content: content
-    }).delay(millisecondsTillReminder).save(function(err) {
-      if (!err) {
-        return msg.direct(moment(chrono.parseDate(datetime)).calendar(
-          moment.now(), "M/D/YYYY h:mm a") + ', ' + target +
-          ' will be reminded "' + content + '" ');
+    return selectTz([target.username, target.discriminator])
+    .then(res => {
+      if (!res) {
+        return msg.say(exceptions.timezone_not_set);
+      } else {
+        return queue.create('reminder', {
+          target_id: target.id,
+          content: content
+        }).delay(millisecondsTillReminder).save(function(err) {
+          if (!err) {
+            return msg.direct(
+              `${scheduledTime}, ${target} will be reminded "${content}"`
+            );
+          }
+        })
       }
-    });
+    })
+    .then(job => {
+      return queue.process('reminder', function(job, done) {
+        bot.fetchUser(job.data.target_id).then(user => {
+          user.send(job.data.content);
+        });
 
-    queue.process('reminder', function(job, done) {
-      bot.fetchUser(job.data.target_id).then(user => {
-        user.send(job.data.content);
+        done();
       });
-
-      done();
     });
   };
 };

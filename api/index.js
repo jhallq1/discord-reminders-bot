@@ -5,7 +5,8 @@ const keys = require('./keys.json');
 
 bot.registry
     .registerGroups([
-      ['reminders', 'Reminders']
+      ['reminders', 'Reminders'],
+      ['misc', 'Miscellaneous']
     ])
     .registerDefaults()
     .registerCommandsIn(path.join(__dirname, 'commands'));
