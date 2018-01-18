@@ -38,7 +38,7 @@ module.exports = class TimezoneCommand extends Command {
     ])
     .then(res => {
       if (res > 0) {
-        return msg.direct('Your timezone has been set to ' + content);
+        return msg.direct(`Your timezone has been set to ${content}`);
       };
     });
   };
