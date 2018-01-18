@@ -15,7 +15,7 @@ jobs:
       - 
         run: "cp ~/repo/api/.keys.json ~/repo/api/keys.json"
       -
-        run: "mocha"
+        run: "npm run test"
       - 
         save_cache: 
           key: "v1-dependencies-{{ checksum \"package.json\" }}"
