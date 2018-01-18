@@ -27,14 +27,15 @@ module.exports = class TimezoneCommand extends Command {
   }
 
   run(msg, { content }) {
-    let username = msg.message.author.username;
-    let discriminator = msg.message.author.discriminator;
-
     if (!moment.tz.names().includes(content)) {
       return msg.say(exceptions.invalid_timezone);
     }
 
-    return insertTz([username, discriminator, content])
+    return insertTz([
+      msg.message.author.username,
+      msg.message.author.discriminator,
+      content
+    ])
     .then(res => {
       if (res > 0) {
         return msg.direct('Your timezone has been set to ' + content);
