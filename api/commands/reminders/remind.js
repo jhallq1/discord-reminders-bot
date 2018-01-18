@@ -5,6 +5,7 @@ const kue         = require('kue');
 const bot         = require('../../bot.js');
 const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
+const selectTz    = require('../../../db/queries/selectTimezone.js');
 
 const queue = kue.createQueue({
   redis: {
@@ -57,6 +58,10 @@ module.exports = class RemindCommand extends Command {
 
     if (millisecondsTillReminder < 0) {
       return msg.say(exceptions.past_time);
+    }
+
+    if (!selectTz([target.username, target.discriminator])) {
+      return msg.say(exceptions.timezone_not_set);
     }
 
     let job = queue.create('reminder', {
