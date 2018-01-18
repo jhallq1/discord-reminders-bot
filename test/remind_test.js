@@ -1,11 +1,13 @@
 const proxyquire = require('proxyquire').noCallThru();
 const expect     = require('chai').expect;
 const msg        = require('./stubs/message.js');
-const exceptions = require('../api/util/exceptions.json')
+const exceptions = require('../api/util/exceptions.json');
+
 const RemindCommand = proxyquire(
     '../api/commands/reminders/remind.js',
     {
         'discord.js-commando': require('./stubs/Command.js'),
+        'kue': require('./stubs/Kue.js'),
         '@global': true
     }
 );
@@ -31,7 +33,7 @@ describe('#run', () => {
         context('when date is in the past', () => {
             let time = 'yesterday at noon';
 
-            it('throws time pasted exception', () => {
+            it('throws date in past exception', () => {
                 expect(
                     new RemindCommand({}).run(
                         msg,
