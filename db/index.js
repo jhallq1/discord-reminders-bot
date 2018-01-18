@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const keys = require('../keys.json');
+const keys = require('./../api/keys.json');
 
 module.exports = new Client({
   host: keys.db_host,
