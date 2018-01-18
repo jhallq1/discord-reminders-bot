@@ -8,6 +8,6 @@ module.exports = function insertTimezone(values) {
     "SET timezone = $3",
     values
   )
-  .then(res => {console.log(res); return res.rowCount;})
+  .then(res => {return res.rowCount;})
   .catch(err => console.error(err.stack));
 }
