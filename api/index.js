@@ -1,5 +1,6 @@
 const path = require('path');
-const bot = require('./bot.js');
+const bot  = require('./bot.js');
+const db   = require('./db/index.js');
 const keys = require('./keys.json');
 
 bot.registry
@@ -16,3 +17,11 @@ bot.once('ready', () => {
 });
 
 bot.login(keys.token);
+
+db.connect((err) => {
+  if (err) {
+    console.error('DB connection failed!', err.stack);
+  } else {
+    console.log('Connected to db');
+  }
+});
