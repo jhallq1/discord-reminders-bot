@@ -60,27 +60,30 @@ module.exports = class RemindCommand extends Command {
       return msg.say(exceptions.past_time);
     }
 
-    if (!selectTz([target.username, target.discriminator])) {
-      return msg.say(exceptions.timezone_not_set);
-    }
+    return selectTz([target.username, target.discriminator])
+    .then(res => {
+      if (!res) {
+        return msg.say(exceptions.timezone_not_set);
+      } else {
+        let job = queue.create('reminder', {
+          target_id: target.id,
+          content: content
+        }).delay(millisecondsTillReminder).save(function(err) {
+          if (!err) {
+            return msg.direct(moment(chrono.parseDate(datetime)).calendar(
+              moment.now(), "M/D/YYYY h:mm a") + ', ' + target +
+              ' will be reminded "' + content + '" ');
+          }
+        });
 
-    let job = queue.create('reminder', {
-      target_id: target.id,
-      content: content
-    }).delay(millisecondsTillReminder).save(function(err) {
-      if (!err) {
-        return msg.direct(moment(chrono.parseDate(datetime)).calendar(
-          moment.now(), "M/D/YYYY h:mm a") + ', ' + target +
-          ' will be reminded "' + content + '" ');
+        queue.process('reminder', function(job, done) {
+          bot.fetchUser(job.data.target_id).then(user => {
+            user.send(job.data.content);
+          });
+
+          done();
+        });
       }
-    });
-
-    queue.process('reminder', function(job, done) {
-      bot.fetchUser(job.data.target_id).then(user => {
-        user.send(job.data.content);
-      });
-
-      done();
     });
   };
 };

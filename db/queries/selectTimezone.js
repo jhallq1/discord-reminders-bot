@@ -7,11 +7,7 @@ module.exports = function selectTimezone(values) {
     values
   )
   .then(res => {
-    if (res.rowCount > 0) {
-      return res.fields;
-    } else {
-      return false;
-    }
+    return res.rowCount > 0 ? res.fields : false;
   })
   .catch(err => console.error(err.stack));
 }
