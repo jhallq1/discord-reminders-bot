@@ -10,6 +10,13 @@ and receive reminders.
 - [ ] Cancel set reminders
 - [ ] Receive notification when reminder task is completed
 
+## Setup
+ - Clone Repo
+ - `npm install`
+ - `cp ~/api/.keys.json ~/api/keys.json`
+ - Change secrest in `keys.json` to your own
+ - `npm start`
+
 ## Dependencies
 * [Node.js](https://nodejs.org/): version 8.0.0 or newer
 * [Discord.js](https://discord.js.org): node.js module that provides access
