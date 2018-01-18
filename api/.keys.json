@@ -1,9 +1,9 @@
 {
     "owner":      "a",
     "token":      "b",
-    "redisHost":  "c",
-    "redisPort":  "d",
-    "redisKey":   "e",
+    "redisHost":  "123.123.123.123",
+    "redisPort":  "1234",
+    "redisKey":   "",
     "dbHost":     "localhost",
     "dbPort":     "5432",
     "dbUser":     "h",
