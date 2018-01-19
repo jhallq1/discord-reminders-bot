@@ -15,10 +15,10 @@ module.exports = (input, offset) => {
     .calendar(moment.now(), "M/D/YYYY h:mm a");
 
   return {
-    "timeWithOffset": timeWithOffset,
-    "delayAmt": delayAmt,
-    "translation": translation,
-    "input": input,
-    "offset": offset
+    "timeWithOffset" : timeWithOffset,
+    "delayAmt"       : delayAmt,
+    "translation"    : translation,
+    "input"          : input,
+    "offset"         : offset
   };
 }
