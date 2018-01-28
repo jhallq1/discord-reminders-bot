@@ -1,2 +1,2 @@
 --recursive
---require test/test_helpers/db_circle_init.js
+test/test_helpers/db_circle_init.js
