@@ -38,7 +38,7 @@ jobs:
             - v1-dependencies-
       -
         run: "npm install"
-      
+      -
         run: "cp ~/repo/api/.keys.json ~/repo/api/keys.json"
       -
         run: "npm run db_init"
