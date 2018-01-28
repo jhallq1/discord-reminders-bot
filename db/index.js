@@ -1,12 +1,18 @@
 const { Client } = require('pg');
 const keys = require('./../api/keys.json');
 
-let ev = process.env.NODE_ENV = 'test' ? keys.dbDatabase_test : keys.dbDatabase;
+let env_keys;
+
+if (process.env.NODE_ENV == 'test') {
+    env_keys = keys.testDatabase
+} else {
+    env_keys = keys.prodDatabase
+}
 
 module.exports = new Client({
-  host: keys.dbHost,
-  port: keys.dbPort,
-  user: keys.dbUser,
-  password: keys.dbPassword,
-  database: ev
+  host: env_keys.dbHost,
+  port: env_keys.dbPort,
+  user: env_keys.dbUser,
+  password: env_keys.dbPassword,
+  database: env_keys.dbDatabase
 });

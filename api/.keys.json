@@ -1,13 +1,21 @@
 {
-    "owner":      "a",
-    "token":      "b",
-    "redisHost":  "123.123.123.123",
-    "redisPort":  "1234",
-    "redisKey":   "",
-    "dbUser":     "h",
-    "dbPassword": "i",
-    "dbDatabase": "j",
-    "dbDatabase_test": "drb_test",
-    "dbHost": "localhost",
-    "dbPort": 5432
+  "owner":     "a",
+  "token":     "b",
+  "redisHost": "123.123.123.123",
+  "redisPort": "1234",
+  "redisKey":  "",
+  "prodDatabase": {
+    "dbUser":     "",
+    "dbPassword": "",
+    "dbDatabase": "",
+    "dbHost":     "",
+    "dbPort":     5432
+  },
+  "testDatabase": {
+    "dbUser":     "postgres",
+    "dbPassword": "postgres",
+    "dbDatabase": "drb_test",
+    "dbHost":     "localhost",
+    "dbPort":     5432
+  }
 }
