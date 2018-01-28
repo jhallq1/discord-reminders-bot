@@ -19,7 +19,4 @@ db.connect(err => {
     console.error(err.stack)
     db.end();
   });
-})
-
-
-
+});
