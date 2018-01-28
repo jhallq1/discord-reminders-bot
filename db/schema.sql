@@ -1,7 +1,3 @@
--- Table: public.users
-
--- DROP TABLE public.users;
-
 CREATE SEQUENCE public.id_seq
     INCREMENT 1
     START 20

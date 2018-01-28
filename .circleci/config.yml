@@ -38,22 +38,8 @@ jobs:
             - v1-dependencies-
       - 
         run: "npm install"
-      - 
-        run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - run:
-          name: Installing Dependencies
-          command: |
-            yarn install
-            sudo apt-get install postgresql-client
       -
         run: "cp ~/repo/api/.keys.json ~/repo/api/keys.json"
-      - 
-        run: 
-          name: Import DB schema
-          command: psql databasename < ~/repo/db/schema.sql
       - 
         run: "npm run test"
       - 

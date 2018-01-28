@@ -1,4 +1,4 @@
-require('./helpers/db_helpers.js');
+require('./test_helpers/db_helpers.js');
 
 const proxyquire = require('proxyquire').noCallThru();
 const expect     = require('chai').expect;
