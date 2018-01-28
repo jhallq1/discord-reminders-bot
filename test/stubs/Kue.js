@@ -1,6 +1,6 @@
-module.exports = {
+const kue = {
   createQueue: secrets => {
-    return secrets;
+    return kue;
   },
   create: (key, msg) => {
     return { key: key, msg: msg };
@@ -9,9 +9,12 @@ module.exports = {
     return milliseconds;
   },
   save: fn => {
-    return fn;
+    return fn();
   },
   process: (key, cb) => {
+    cb();
     return { key: key, cb: cb };
   }
 }
+
+module.exports = kue;

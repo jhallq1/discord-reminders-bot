@@ -51,18 +51,20 @@ module.exports = class RemindCommand extends Command {
 
   run(msg, { target, content, datetime }) {
     if (!chrono.parseDate(datetime)) {
-      return msg.say(exceptions.invalid_datetime_format);
+      return new Promise((resolve, reject) => {
+        return reject(msg.say(exceptions.invalid_datetime_format));
+      });
     }
 
     return selectTz([target.username, target.discriminator])
     .then(timezone => {
       if (!timezone) {
-        return msg.say(exceptions.timezone_not_set);
+        return Promise.reject(msg.say(exceptions.timezone_not_set));
       } else {
         let parsedTime = parseDate(datetime, timezone);
 
         if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
-          return msg.say(exceptions.past_time);
+          return Promise.reject(msg.say(exceptions.past_time));
         }
 
         return queue.create('reminder', {
@@ -82,7 +84,6 @@ module.exports = class RemindCommand extends Command {
         bot.fetchUser(job.data.target_id).then(user => {
           user.send(job.data.content);
         });
-
         done();
       });
     });
