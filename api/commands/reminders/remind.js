@@ -59,19 +59,19 @@ module.exports = class RemindCommand extends Command {
       if (!timezone) {
         return msg.say(exceptions.timezone_not_set);
       } else {
-        let obj = parseDate(datetime, timezone);
+        let parsedTime = parseDate(datetime, timezone);
 
-        if (moment(obj.timeWithOffset).diff(moment()) < 0) {
+        if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
           return msg.say(exceptions.past_time);
         }
 
         return queue.create('reminder', {
           target_id: target.id,
           content: content
-        }).delay(obj.delayAmt).save(function(err) {
+        }).delay(parsedTime.delayAmt).save(function(err) {
           if (!err) {
             return msg.direct(
-              `${obj.translation}, ${target} will be reminded "${content}"`
+              `${parsedTime.parsed}, ${target} will be reminded "${content}"`
             );
           }
         })

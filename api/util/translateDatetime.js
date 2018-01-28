@@ -11,13 +11,13 @@ module.exports = (input, offset) => {
 
   let delayAmt = moment(timeWithOffset).valueOf() - moment().valueOf();
 
-  let translation = moment(chrono.parseDate(timeWithOffset))
+  let parsed = moment(chrono.parseDate(timeWithOffset))
     .calendar(moment.now(), "M/D/YYYY h:mm a");
 
   return {
     "timeWithOffset" : timeWithOffset,
     "delayAmt"       : delayAmt,
-    "translation"    : translation,
+    "parsed"         : parsed,
     "input"          : input,
     "offset"         : offset
   };
