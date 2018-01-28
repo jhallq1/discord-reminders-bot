@@ -15,10 +15,11 @@ db.connect(err => {
     console.log('DB Schema Loaded');
     db.end();
   })
+  .catch(err => {
+    console.error(err.stack)
+    db.end();
+  });
 })
-.catch(err => {
-  console.error(err.stack)
-  db.end();
-});
+
 
 
