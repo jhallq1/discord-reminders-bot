@@ -5,7 +5,7 @@
   "main": "api/index.js",
   "scripts": {
     "start": "node api/index.js",
-    "db_init": "node ./db/db_init.js",
+    "db_init": "NODE_ENV='test' node ./db/db_init.js",
     "test": "NODE_ENV='test' ./node_modules/mocha/bin/mocha"
   },
   "repository": {
