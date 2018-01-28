@@ -18,10 +18,42 @@ jobs:
             - v1-dependencies-
       - 
         run: "npm install"
+        jobs: 
+  build: 
+    docker: 
       - 
+        image: "circleci/node:latest"
+      - 
+        environment: 
+          POSTGRES_DB: drb_test
+          POSTGRES_PASSWORD: ""
+          POSTGRES_USER: postgres
+        image: "circleci/postgres:9.6.2-alpine"
+    steps: 
+      - checkout
+      - 
+        restore_cache: 
+          keys: 
+            - "v1-dependencies-{{ checksum \"package.json\" }}"
+            - v1-dependencies-
+      - 
+        run: "npm install"
+      - 
+        run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Installing Dependencies
+          command: |
+            yarn install
+            sudo apt-get install postgresql-client
+      -
         run: "cp ~/repo/api/.keys.json ~/repo/api/keys.json"
       - 
-        run: "psql databasename < ~/repo/db/schema.sql"
+        run: 
+          name: Import DB schema
+          command: psql databasename < ~/repo/db/schema.sql
       - 
         run: "npm run test"
       - 
