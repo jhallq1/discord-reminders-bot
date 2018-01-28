@@ -9,8 +9,7 @@ db.connect(err => {
   if (err) {
     console.error('DB connection failed!', err.stack);
   }
-})
-.then(res => {
+
   return db.query(schema)
   .then(res => {
     console.log('DB Schema Loaded');
