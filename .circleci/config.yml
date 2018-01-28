@@ -1,25 +1,25 @@
-jobs: 
-  build: 
-    docker: 
-      - 
+jobs:
+  build:
+    docker:
+      -
         image: "circleci/node:latest"
-    steps: 
+    steps:
       - checkout
-      - 
-        restore_cache: 
-          keys: 
+      -
+        restore_cache:
+          keys:
             - "v1-dependencies-{{ checksum \"package.json\" }}"
             - v1-dependencies-
-      - 
+      -
         run: "npm install"
-      - 
+      -
         run: "cp ~/repo/api/.keys.json ~/repo/api/keys.json"
       -
         run: "npm run test"
-      - 
-        save_cache: 
+      -
+        save_cache:
           key: "v1-dependencies-{{ checksum \"package.json\" }}"
-          paths: 
+          paths:
             - node_modules
     working_directory: ~/repo
 version: 2
