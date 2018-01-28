@@ -32,9 +32,16 @@ describe('#run', () => {
       it('throws invalid format exception', () => {
         return new RemindCommand({}).run(
             msg,
-            { target: target, content: content, datetime: unparsable_time }
+            {
+              target: target,
+              content: content,
+              datetime:
+              unparsable_time
+            }
         ).catch(res => {
-            expect(res).to.eq(exceptions.invalid_datetime_format);
+            expect(res).to.eq(
+              exceptions.invalid_datetime_format
+            );
         });
       });
     });
@@ -45,7 +52,12 @@ describe('#run', () => {
       it('throws invalid timezone exception', () => {
         return new RemindCommand({}).run(
             msg,
-            { target: target, content: content, datetime: parsable_time }
+            {
+              target: target,
+              content: content,
+              datetime:
+              parsable_time
+            }
         ).catch(test => {
             expect(test).to.eq(exceptions.timezone_not_set);
         });
@@ -56,11 +68,18 @@ describe('#run', () => {
       let timezone = 'America/Los_Angeles';
 
       it('throws date in past exception', () => {
-        return insertTz([target.username, target.discriminator, timezone])
+        return insertTz(
+          [target.username, target.discriminator, timezone]
+        )
         .then(() => {
           return new RemindCommand({}).run(
             msg,
-            { target: target, content: content, datetime: past_time }
+            {
+              target: target,
+              content: content,
+              datetime:
+              past_time
+            }
           );
         })
         .catch(test => {
