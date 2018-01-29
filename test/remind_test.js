@@ -71,7 +71,6 @@ describe('#run', () => {
   });
 
   describe('message timezone', () => {
-    let today         = new Date()
     let reminder_time = `in 24 hours`;
     let delay         = 8.64*10**7;
 
@@ -81,7 +80,7 @@ describe('#run', () => {
           [target.username, target.discriminator, 'UTC']
         )
         .then(() => {
-          return subject(msg, target, content, reminder_time)
+          return subject(msg, target, content, reminder_time);
         })
         .then(res => {
           expect(res.processed).to.eq(true)
@@ -99,7 +98,7 @@ describe('#run', () => {
           [target.username, target.discriminator, timezone]
         )
         .then(() => {
-          return subject(msg, target, content, reminder_time)
+          return subject(msg, target, content, reminder_time);
         })
         .then(res => {
           expect(res.processed).to.eq(true)
@@ -117,7 +116,7 @@ describe('#run', () => {
           [target.username, target.discriminator, offset]
         )
         .then(() => {
-          return subject(msg, target, content, reminder_time)
+          return subject(msg, target, content, reminder_time);
         })
         .then(res => {
           expect(res.processed).to.eq(true)
