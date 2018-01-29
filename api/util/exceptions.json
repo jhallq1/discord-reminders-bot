@@ -2,5 +2,6 @@
   "invalid_datetime_format": "Error! Please use the `rbot help set` command to view accepted datetime formats.",
   "past_time": "Error! You cannot schedule a reminder for the past.",
   "timezone_not_set": "Error! You must first set your timezone in order to schedule reminders. Please use the `rbot help timezone` command to learn how.",
-  "invalid_timezone": "Error! Please try again using a valid timezone in the format of `America/Los_Angeles`. Please refer to `https://en.wikipedia.org/wiki/List_of_tz_database_time_zones` for a list of acceptable zones."
+  "invalid_timezone": "Error! Please try again using a valid timezone in the format of `America/Los_Angeles`. Please refer to `https://en.wikipedia.org/wiki/List_of_tz_database_time_zones` for a list of acceptable zones.",
+  "queue_save": "Kue Exception: Failed during save"
 }

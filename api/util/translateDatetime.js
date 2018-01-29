@@ -1,24 +1,30 @@
 const chrono = require('chrono-node');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
-module.exports = (input, offset) => {
-  let parsedDate = chrono.parse(input, moment().utcOffset(offset))[0].start;
-  parsedDate.assign('timezoneOffset', offset);
+module.exports = (input, timezone) => {
+  let date = new Date();
+  let time_in_zone = moment(date).tz(timezone);
+  let zone         = time_in_zone.zoneAbbr();
+  let ref          = time_in_zone.format();
 
-  let timeWithOffset = moment(parsedDate.date())
-    .utcOffset(offset)
-    .toISOString();
+  let parsedDate
 
-  let delayAmt = moment(timeWithOffset).valueOf() - moment().valueOf();
+  if (timezone != 'UTC') {
+    parsedDate = chrono.parseDate(input + " " + zone, ref)
+  } else {
+    parsedDate = chrono.parseDate(input)
+  }
+  
 
-  let parsed = moment(chrono.parseDate(timeWithOffset))
-    .calendar(moment.now(), "M/D/YYYY h:mm a");
+  let delayAmt = 
+    parsedDate.getTime() - time_in_zone.valueOf();
 
   return {
-    "timeWithOffset" : timeWithOffset,
-    "delayAmt"       : delayAmt,
-    "parsed"         : parsed,
-    "input"          : input,
-    "offset"         : offset
+    "delayAmt": delayAmt,
+    "parsed"  : moment(parsedDate)
+                .tz(timezone)
+                .format("M/D/YYYY h:mm a"),
+    "input"   : input,
+    "offset"  : time_in_zone.format('Z')
   };
 }
