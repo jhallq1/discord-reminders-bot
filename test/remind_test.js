@@ -7,7 +7,6 @@ const expect     = require('chai').expect;
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
-const moment     = require('moment');
 
 const RemindCommand = proxyquire(
     '../api/commands/reminders/remind.js',
