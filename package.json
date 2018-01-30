@@ -4,7 +4,9 @@
   "description": "Reminders Bot for Discord",
   "main": "api/index.js",
   "scripts": {
-    "start": "node api/index.js"
+    "start": "node api/index.js",
+    "db_init": "NODE_ENV='test' node ./db/db_init.js",
+    "test": "NODE_ENV='test' ./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,9 @@
     "discord.js-commando": "^0.9.0",
     "kue": "^0.11.6",
     "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "path": "^0.12.7",
+    "pg": "^7.4.1",
     "redis": "^2.8.0",
     "semver": "^5.4.1"
   },
