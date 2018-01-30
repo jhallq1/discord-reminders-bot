@@ -62,7 +62,7 @@ module.exports = class RemindCommand extends Command {
         return Promise.reject(msg.say(exceptions.timezone_not_set));
       } else {
         let parsedTime = parseDate(datetime, timezone);
-
+        
         if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
           return Promise.reject(msg.say(exceptions.past_time));
         }
@@ -70,20 +70,28 @@ module.exports = class RemindCommand extends Command {
         return queue.create('reminder', {
           target_id: target.id,
           content: content
-        }).delay(parsedTime.delayAmt).save(function(err) {
+        })
+        .delay(parsedTime.delayAmt)
+        .save(function(err) {
           if (!err) {
             return msg.direct(
               `${parsedTime.parsed}, ${target} will be reminded "${content}"`
             );
+          } else {
+            return Promise.reject(exceptions.queue_save);
           }
-        })
+        });
       }
     })
     .then(job => {
       return queue.process('reminder', function(job, done) {
         bot.fetchUser(job.data.target_id).then(user => {
           user.send(job.data.content);
+        })
+        .catch(exception => {
+          return Promise.reject(exception);
         });
+
         done();
       });
     });
