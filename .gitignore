@@ -6,3 +6,6 @@ keys.json
 
 # Dump files
 *.rdb
+
+# Dot files
+.*
