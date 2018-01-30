@@ -10,6 +10,8 @@ db.connect(err => {
     console.error('DB connection failed!', err.stack);
   }
 
+  schema = schema.replace(/postgres/g, db.user);
+
   return db.query(schema)
   .then(res => {
     console.log('DB Schema Loaded');
