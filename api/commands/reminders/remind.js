@@ -6,6 +6,7 @@ const bot         = require('../../bot.js');
 const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
+const parseDate   = require('../../util/translateDatetime.js');
 
 const queue = kue.createQueue({
   redis: {
@@ -50,40 +51,45 @@ module.exports = class RemindCommand extends Command {
 
   run(msg, { target, content, datetime }) {
     if (!chrono.parseDate(datetime)) {
-      return msg.say(exceptions.invalid_datetime_format);
-    }
-    
-    let scheduledTime = moment(chrono.parseDate(datetime)).calendar(
-      moment.now(), "M/D/YYYY h:mm a");
-
-    let millisecondsTillReminder = chrono.parseDate(datetime).getTime() -
-      moment().valueOf();
-
-    if (millisecondsTillReminder < 0) {
-      return msg.say(exceptions.past_time);
+      return new Promise((resolve, reject) => {
+        return reject(msg.say(exceptions.invalid_datetime_format));
+      });
     }
 
     return selectTz([target.username, target.discriminator])
-    .then(res => {
-      if (!res) {
-        return msg.say(exceptions.timezone_not_set);
+    .then(timezone => {
+      if (!timezone) {
+        return Promise.reject(msg.say(exceptions.timezone_not_set));
       } else {
+        let parsedTime = parseDate(datetime, timezone);
+        
+        if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
+          return Promise.reject(msg.say(exceptions.past_time));
+        }
+
         return queue.create('reminder', {
           target_id: target.id,
           content: content
-        }).delay(millisecondsTillReminder).save(function(err) {
+        })
+        .delay(parsedTime.delayAmt)
+        .save(function(err) {
           if (!err) {
             return msg.direct(
-              `${scheduledTime}, ${target} will be reminded "${content}"`
+              `${parsedTime.parsed}, ${target} will be reminded "${content}"`
             );
+          } else {
+            return Promise.reject(exceptions.queue_save);
           }
-        })
+        });
       }
     })
     .then(job => {
       return queue.process('reminder', function(job, done) {
         bot.fetchUser(job.data.target_id).then(user => {
           user.send(job.data.content);
+        })
+        .catch(exception => {
+          return Promise.reject(exception);
         });
 
         done();

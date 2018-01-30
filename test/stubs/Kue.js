@@ -1,17 +1,31 @@
-module.exports = {
+const kue = {
+  data: {
+    target_id: null,
+    content:   null
+  },
   createQueue: secrets => {
-    return secrets;
+    this.secrets = secrets;
+    return kue;
   },
   create: (key, msg) => {
-    return { key: key, msg: msg };
+    kue.data.target_id = key;
+    kue.data.content = msg;
+    return kue;
   },
   delay: milliseconds => {
-    return milliseconds;
+    kue.delayInMilliseconds = milliseconds;
+    return kue;
   },
   save: fn => {
-    return fn;
+    fn();
+    return kue;
   },
   process: (key, cb) => {
-    return { key: key, cb: cb };
-  }
+    kue.process_data = { key: key, cb: cb };
+    cb(kue, ()=>{ kue.processed = true; });
+    return kue;
+  },
+  processed: false
 }
+
+module.exports = kue;

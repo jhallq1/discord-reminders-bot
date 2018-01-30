@@ -6,8 +6,6 @@ module.exports = function selectTimezone(values) {
     "AND username_discriminator = $2",
     values
   )
-  .then(res => {
-    return res.rowCount > 0 ? res.fields : false;
-  })
+  .then(res => {return res.rowCount > 0 ? res.rows[0].timezone : false;})
   .catch(err => console.error(err.stack));
 }
