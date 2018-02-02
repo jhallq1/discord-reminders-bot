@@ -1,6 +1,8 @@
+const { resolve } = require('resolve');
+
+const path    = resolve('./schema.sql');
 const db      = require('./index.js');
 const fs      = require('fs');
-const path    = require('./schema.sql');
 
 let schema = fs.readFileSync(path).toString();
 
