@@ -7,6 +7,7 @@ const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
 const parseDate   = require('../../util/translateDatetime.js');
+const sanitize    = require('sanitizer');
 
 const queue = kue.createQueue({
   redis: {
@@ -50,6 +51,8 @@ module.exports = class RemindCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
+    content = sanitize.escape(content);
+    
     if (!chrono.parseDate(datetime)) {
       return new Promise((resolve, reject) => {
         return reject(msg.say(exceptions.invalid_datetime_format));
@@ -62,7 +65,7 @@ module.exports = class RemindCommand extends Command {
         return Promise.reject(msg.say(exceptions.timezone_not_set));
       } else {
         let parsedTime = parseDate(datetime, timezone);
-        
+
         if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
           return Promise.reject(msg.say(exceptions.past_time));
         }
