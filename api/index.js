@@ -4,12 +4,12 @@ const db   = require('./../db/index.js');
 const keys = require('./keys.json');
 
 bot.registry
-    .registerGroups([
-      ['reminders', 'Reminders'],
-      ['misc', 'Miscellaneous']
-    ])
-    .registerDefaults()
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+.registerGroups([
+  ['reminders', 'Reminders'],
+  ['misc', 'Miscellaneous']
+])
+.registerDefaults()
+.registerCommandsIn(path.join(__dirname, 'commands'));
 
 
 bot.once('ready', () => {
