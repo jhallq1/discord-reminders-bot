@@ -1,11 +1,10 @@
-let db      = require('./index.js');
-let fs      = require('fs');
-let resolve = require('path').resolve;
-let path    = resolve('db/schema.sql');
+const db      = require('./index.js');
+const fs      = require('fs');
+const path    = require('./schema.sql');
 
 let schema = fs.readFileSync(path).toString();
 
-db.connect(err => {
+db.connect((err) => {
   if (err) {
     console.error('DB connection failed!', err.stack);
   }
@@ -13,12 +12,12 @@ db.connect(err => {
   schema = schema.replace(/postgres/g, db.user);
 
   return db.query(schema)
-  .then(res => {
+  .then(() => {
     console.log('DB Schema Loaded');
     db.end();
   })
-  .catch(err => {
-    console.error(err.stack)
+  .catch(() => {
+    console.error(err.stack);
     db.end();
   });
 });
