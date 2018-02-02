@@ -1,4 +1,4 @@
-const { resolve } = require('resolve');
+const { resolve } = require('path');
 
 const path    = resolve('./schema.sql');
 const db      = require('./index.js');
