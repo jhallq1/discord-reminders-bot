@@ -20,11 +20,11 @@ const command = {
   name: 'remind',
   group: 'reminders',
   memberName: 'remind',
-  description: 'Set a new reminder.',
-  examples: ['rbot remind @user "Buy milk" tomorrow',
-    'rbot remind @user "Pick up the dog" in 4 hours',
-    'rbot remind @user take the trash out at 6pm',
-    'rbot remind @user renew driver license in 2 weeks'],
+  description: 'Set a new reminder. When using the one-line/short-hand ' +
+    'version of this command, enclose the reminder task in double quotes ' +
+    'for more accurate parsing. See examples below: ',
+  examples: ['rbot remind @user "Tell Kiba he\'s a good boy" tomorrow morning',
+    'rbot remind @user "Pick up the dog" in 4 hours'],
   args: [
     {
       key: 'target',
