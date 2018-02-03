@@ -24,7 +24,7 @@ function subject(msg, target, content, datetime) {
 }
 
 describe('#run', () => {
-  const content = "Hello World!";
+  const content = 'Hello World!';
   const target  = {
     id: 1,
     username: 'test_user',
@@ -38,17 +38,17 @@ describe('#run', () => {
 
     context('when date format is incorrect', () => {
       it('throws invalid format exception', () => {
-        return subject(msg, target, content, unparsableTime).catch(ex => {
+        return subject(msg, target, content, unparsableTime).catch((ex) => {
           expect(ex).to.eq(exceptions.invalid_datetime_format);
         });
       });
     });
 
     context('when timezone is not set', () => {
-      let time = 'tomorrow at noon';
+      const time = 'tomorrow at noon';
 
       it('throws invalid timezone exception', () => {
-        return subject(msg, target, content, pastTime).catch(ex => {
+        return subject(msg, target, content, pastTime).catch((ex) => {
           expect(ex).to.eq(exceptions.timezone_not_set);
         });
       });
