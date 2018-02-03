@@ -46,7 +46,7 @@ describe('#run', () => {
 
     context('when timezone is not set', () => {
       let time = 'tomorrow at noon';
-    
+
       it('throws invalid timezone exception', () => {
         return subject(msg, target, content, parsable_time).catch(ex => {
           expect(ex).to.eq(exceptions.timezone_not_set);
