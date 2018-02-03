@@ -59,10 +59,8 @@ describe('#run', () => {
         return insertTz(
           [target.username, target.discriminator, 'America/Los_Angeles']
         )
-        .then(res => {
-          return subject(msg, target, content, past_time)
-        })
-        .catch(ex => {
+        .then(() => subject(msg, target, content, pastTime))
+        .catch((ex) => {
           expect(ex).to.eq(exceptions.past_time);
         });
       });
