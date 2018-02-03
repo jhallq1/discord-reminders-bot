@@ -1,17 +1,17 @@
 const user = require('./User.js');
 
 const client = {
-  fetchUser: id => {
+  fetchUser: (id) => {
     this.id = id;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve(user);
     });
   }
 };
 
-module.exports = module.exports = {
+module.exports = {
   CommandoClient: class CommandoClient {
-    constructor(_) {
+    constructor() {
       return client;
     }
   }
