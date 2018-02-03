@@ -73,17 +73,15 @@ describe('#run', () => {
     const delay        = 8.64 * (10 ** 7);
 
     context('same as server', () => {
-      it('adds two hours to the server time', () => {
-        return insertTz(
-          [target.username, target.discriminator, 'UTC']
-        )
-        .then(() => subject(msg, target, content, reminderTime))
-        .then((res) => {
-          expect(res.processed).to.eq(true)
-          expect(roundTimestampToDay(res.delayInMilliseconds))
-          .to.eq(delay);
-        });
-      });
+      it('adds two hours to the server time', () => insertTz(
+        [target.username, target.discriminator, 'UTC']
+      )
+      .then(() => subject(msg, target, content, reminderTime))
+      .then((res) => {
+        expect(res.processed).to.eq(true)
+        expect(roundTimestampToDay(res.delayInMilliseconds))
+        .to.eq(delay);
+      }));
     });
 
     context('behind server', () => {
