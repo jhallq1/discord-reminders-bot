@@ -68,8 +68,8 @@ describe('#run', () => {
   });
 
   describe('message timezone', () => {
-    let reminder_time = `in 24 hours`;
-    let delay         = 8.64*10**7;
+    const reminderTime = 'in 24 hours';
+    const delay         = (8.64 * 10) ** 7;
 
     context('same as server', () => {
       it('adds two hours to the server time', () => {
@@ -77,7 +77,7 @@ describe('#run', () => {
           [target.username, target.discriminator, 'UTC']
         )
         .then(() => {
-          return subject(msg, target, content, reminder_time);
+          return subject(msg, target, content, reminderTime);
         })
         .then(res => {
           expect(res.processed).to.eq(true)
