@@ -1,9 +1,9 @@
 const kue = {
   data: {
     target_id: null,
-    content:   null
+    content: null
   },
-  createQueue: secrets => {
+  createQueue: (secrets) => {
     this.secrets = secrets;
     return kue;
   },
@@ -12,20 +12,20 @@ const kue = {
     kue.data.content = msg;
     return kue;
   },
-  delay: milliseconds => {
+  delay: (milliseconds) => {
     kue.delayInMilliseconds = milliseconds;
     return kue;
   },
-  save: fn => {
+  save: (fn) => {
     fn();
     return kue;
   },
   process: (key, cb) => {
-    kue.process_data = { key: key, cb: cb };
-    cb(kue, ()=>{ kue.processed = true; });
+    kue.process_data = { key, cb };
+    cb(() => { kue.processed = true; });
     return kue;
   },
   processed: false
-}
+};
 
 module.exports = kue;

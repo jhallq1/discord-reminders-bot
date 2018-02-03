@@ -1,7 +1,5 @@
 const { Command } = require('discord.js-commando');
-const bot         = require('../../bot.js');
 const exceptions  = require('../../util/exceptions.json');
-const selectTz    = require('../../../db/queries/selectTimezone.js');
 const insertTz    = require('../../../db/queries/insertTimezone.js');
 const moment      = require('moment-timezone');
 
@@ -36,10 +34,6 @@ module.exports = class TimezoneCommand extends Command {
       msg.message.author.discriminator,
       content
     ])
-    .then(res => {
-      if (res > 0) {
-        return msg.direct(`Your timezone has been set to ${content}`);
-      };
-    });
-  };
+    .then(() => msg.direct(`Your timezone has been set to ${content}`));
+  }
 };
