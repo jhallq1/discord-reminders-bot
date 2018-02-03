@@ -3,7 +3,7 @@ process.env.TZ = 'UTC'
 require('./test_helpers/db_helpers.js');
 
 const proxyquire = require('proxyquire').noPreserveCache().noCallThru();
-const expect     = require('chai').expect;
+const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
