@@ -85,21 +85,17 @@ describe('#run', () => {
     });
 
     context('behind server', () => {
-      const timezone = 'America/Los_Angeles'
+      const timezone = 'America/Los_Angeles';
 
-      it('adds two hours to the server time', () => {
-        return insertTz(
-          [target.username, target.discriminator, timezone]
-        )
-        .then(() => {
-          return subject(msg, target, content, reminderTime);
-        })
-        .then((res) => {
-          expect(res.processed).to.eq(true)
-          expect(roundTimestampToDay(res.delayInMilliseconds))
-          .to.eq(delay);
-        });
-      });
+      it('adds two hours to the server time', () => insertTz(
+        [target.username, target.discriminator, timezone]
+      )
+      .then(() => subject(msg, target, content, reminderTime))
+      .then((res) => {
+        expect(res.processed).to.eq(true);
+        expect(roundTimestampToDay(res.delayInMilliseconds))
+        .to.eq(delay);
+      }));
     });
 
     context('ahead of server', () => {
