@@ -40,7 +40,6 @@ describe('#run', () => {
   describe('time parsing', () => {
     const unparsableTime = 'hello';
     const pastTime       = 'yesterday at noon';
-    const parsableTime   = 'tomorrow at noon';
 
     context('when date format is incorrect', () => {
       it('throws invalid format exception', () => {
