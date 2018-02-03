@@ -1,4 +1,4 @@
-process.env.TZ = 'UTC'
+process.env.TZ = 'UTC';
 
 require('./test_helpers/db_helpers.js');
 
