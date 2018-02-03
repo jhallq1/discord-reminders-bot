@@ -9,12 +9,12 @@ const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
 
 const RemindCommand = proxyquire(
-    '../api/commands/reminders/remind.js',
-    {
-      'discord.js-commando': require('./stubs/Command.js'),
-      'kue': require('./stubs/Kue.js'),
-      '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)
-    }
+  '../api/commands/reminders/remind.js',
+  {
+    'discord.js-commando': require('./stubs/Command.js'),
+    'kue': require('./stubs/Kue.js'),
+    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)
+  }
 );
 
 function subject(msg, target, content, datetime) {
