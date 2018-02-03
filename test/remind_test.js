@@ -23,6 +23,10 @@ function subject(msg, target, content, datetime) {
   );
 }
 
+function roundTimestampToDay(milliseconds) {
+  return Math.round(milliseconds / (10 ** 5)) * (10 ** 5);
+}
+
 describe('#run', () => {
   const content = 'Hello World!';
   const target  = {
@@ -77,7 +81,7 @@ describe('#run', () => {
           [target.username, target.discriminator, 'UTC']
         )
         .then(() => subject(msg, target, content, reminderTime))
-        .then(res => {
+        .then((res) => {
           expect(res.processed).to.eq(true)
           expect(round_timestamp_to_day(res.delayInMilliseconds))
           .to.eq(delay);
@@ -122,7 +126,3 @@ describe('#run', () => {
     });
   });
 });
-
-function round_timestamp_to_day(milliseconds) {
-  return Math.round(milliseconds/10**5)*10**5;
-}
