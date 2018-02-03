@@ -8,18 +8,20 @@ const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
 
+/* eslint-disable global-require */
 const RemindCommand = proxyquire(
   '../api/commands/reminders/remind.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    'kue': require('./stubs/Kue.js'),
-    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)
+    kue: require('./stubs/Kue.js'),
+    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
+/* eslint-enable global-require */
 
-function subject(msg, target, content, datetime) {
+function subject(message, target, content, datetime) {
   return new RemindCommand({}).run(
-    msg, { target, content, datetime }
+    message, { target, content, datetime }
   );
 }
 
@@ -40,23 +42,23 @@ describe('#run', () => {
     const pastTime       = 'yesterday at noon';
     const parsableTime   = 'tomorrow at noon';
 
-    // context('when date format is incorrect', () => {
-    //   it('throws invalid format exception', () => {
-    //     return subject(msg, target, content, unparsableTime).catch((ex) => {
-    //       expect(ex).to.eq(exceptions.invalid_datetime_format);
-    //     });
-    //   });
-    // });
+    context('when date format is incorrect', () => {
+      it('throws invalid format exception', () => {
+        return subject(msg, target, content, unparsableTime).catch((ex) => {
+          expect(ex).to.eq(exceptions.invalid_datetime_format);
+        });
+      });
+    });
 
-    // context('when timezone is not set', () => {
-    //   const time = 'tomorrow at noon';
-    //
-    //   it('throws invalid timezone exception', () => {
-    //     return subject(msg, target, content, pastTime).catch((ex) => {
-    //       expect(ex).to.eq(exceptions.timezone_not_set);
-    //     });
-    //   });
-    // });
+    context('when timezone is not set', () => {
+      const time = 'tomorrow at noon';
+
+      it('throws invalid timezone exception', () => {
+        return subject(msg, target, content, pastTime).catch((ex) => {
+          expect(ex).to.eq(exceptions.timezone_not_set);
+        });
+      });
+    });
 
     context('when date is in the past', () => {
       it('throws date in past exception', () => {
@@ -90,7 +92,7 @@ describe('#run', () => {
     });
 
     context('behind server', () => {
-      let timezone = 'America/Los_Angeles'
+      const timezone = 'America/Los_Angeles'
 
       it('adds two hours to the server time', () => {
         return insertTz(
@@ -99,7 +101,7 @@ describe('#run', () => {
         .then(() => {
           return subject(msg, target, content, reminderTime);
         })
-        .then(res => {
+        .then((res) => {
           expect(res.processed).to.eq(true)
           expect(roundTimestampToDay(res.delayInMilliseconds))
           .to.eq(delay);
