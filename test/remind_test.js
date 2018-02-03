@@ -19,7 +19,7 @@ const RemindCommand = proxyquire(
 
 function subject(msg, target, content, datetime) {
   return new RemindCommand({}).run(
-    msg, { target: target, content: content, datetime: datetime }
+    msg, { target, content, datetime }
   );
 }
 
@@ -32,13 +32,13 @@ describe('#run', () => {
   };
 
   describe('time parsing', () => {
-    let unparsable_time = 'hello';
-    let past_time       = 'yesterday at noon';
-    let parsable_time   = 'tomorrow at noon';
+    const unparsableTime = 'hello';
+    const pastTime       = 'yesterday at noon';
+    const parsableTime   = 'tomorrow at noon';
 
     context('when date format is incorrect', () => {
       it('throws invalid format exception', () => {
-        return subject(msg, target, content, unparsable_time).catch(ex => {
+        return subject(msg, target, content, unparsableTime).catch(ex => {
           expect(ex).to.eq(exceptions.invalid_datetime_format);
         });
       });
@@ -48,7 +48,7 @@ describe('#run', () => {
       let time = 'tomorrow at noon';
 
       it('throws invalid timezone exception', () => {
-        return subject(msg, target, content, parsable_time).catch(ex => {
+        return subject(msg, target, content, pastTime).catch(ex => {
           expect(ex).to.eq(exceptions.timezone_not_set);
         });
       });
