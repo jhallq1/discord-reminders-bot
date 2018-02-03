@@ -76,9 +76,7 @@ describe('#run', () => {
         return insertTz(
           [target.username, target.discriminator, 'UTC']
         )
-        .then(() => {
-          return subject(msg, target, content, reminderTime);
-        })
+        .then(() => subject(msg, target, content, reminderTime))
         .then(res => {
           expect(res.processed).to.eq(true)
           expect(round_timestamp_to_day(res.delayInMilliseconds))
