@@ -50,8 +50,6 @@ describe('#run', () => {
     });
 
     context('when timezone is not set', () => {
-      const time = 'tomorrow at noon';
-
       it('throws invalid timezone exception', () => {
         return subject(msg, target, content, pastTime).catch((ex) => {
           expect(ex).to.eq(exceptions.timezone_not_set);
