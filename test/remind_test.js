@@ -58,15 +58,13 @@ describe('#run', () => {
     });
 
     context('when date is in the past', () => {
-      it('throws date in past exception', () => {
-        return insertTz(
-          [target.username, target.discriminator, 'America/Los_Angeles']
-        )
-        .then(() => subject(msg, target, content, pastTime))
-        .catch((ex) => {
-          expect(ex).to.eq(exceptions.past_time);
-        });
-      });
+      it('throws date in past exception', () => insertTz(
+        [target.username, target.discriminator, 'America/Los_Angeles']
+      )
+      .then(() => subject(msg, target, content, pastTime))
+      .catch((ex) => {
+        expect(ex).to.eq(exceptions.past_time);
+      }));
     });
   });
 
