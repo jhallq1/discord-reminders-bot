@@ -22,7 +22,7 @@ const kue = {
   },
   process: (key, cb) => {
     kue.process_data = { key: key, cb: cb };
-    cb(kue, ()=>{ kue.processed = true; });
+    cb(()=>{ kue.processed = true; });
     return kue;
   },
   processed: false
