@@ -50,11 +50,11 @@ describe('#run', () => {
     });
 
     context('when timezone is not set', () => {
-      it('throws invalid timezone exception', () => {
-        return subject(msg, target, content, pastTime).catch((ex) => {
-          expect(ex).to.eq(exceptions.timezone_not_set);
-        });
-      });
+      it('throws invalid timezone exception', () => subject(
+        msg, target, content, pastTime
+      ).catch((ex) => {
+        expect(ex).to.eq(exceptions.timezone_not_set);
+      }));
     });
 
     context('when date is in the past', () => {
