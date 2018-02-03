@@ -78,7 +78,7 @@ describe('#run', () => {
       )
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
-        expect(res.processed).to.eq(true)
+        expect(res.processed).to.eq(true);
         expect(roundTimestampToDay(res.delayInMilliseconds))
         .to.eq(delay);
       }));
