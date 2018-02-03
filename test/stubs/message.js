@@ -1,10 +1,6 @@
-const commando_msg = {
-  say: msg => {
-    return msg;
-  },
-  direct: msg => {
-    return msg;
-  }
-}
+const commandoMsg = {
+  say: msg => msg,
+  direct: msg => msg
+};
 
-module.exports = commando_msg;
+module.exports = commandoMsg;
