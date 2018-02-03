@@ -42,11 +42,11 @@ describe('#run', () => {
     const pastTime       = 'yesterday at noon';
 
     context('when date format is incorrect', () => {
-      it('throws invalid format exception', () => {
-        return subject(msg, target, content, unparsableTime).catch((ex) => {
-          expect(ex).to.eq(exceptions.invalid_datetime_format);
-        });
-      });
+      it('throws invalid format exception', () => subject(
+        msg, target, content, unparsableTime
+      ).catch((ex) => {
+        expect(ex).to.eq(exceptions.invalid_datetime_format);
+      }));
     });
 
     context('when timezone is not set', () => {
