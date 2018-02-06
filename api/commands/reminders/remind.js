@@ -1,6 +1,5 @@
 const { Command } = require('discord.js-commando');
 const chrono      = require('chrono-node');
-const moment      = require('moment');
 const kue         = require('kue');
 const bot         = require('../../bot.js');
 const keys        = require('../../keys.json');
@@ -63,7 +62,7 @@ module.exports = class RemindCommand extends Command {
 
       const parsedTime = parseDate(datetime, timezone);
 
-      if (moment(parsedTime.timeWithOffset).diff(moment()) < 0) {
+      if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 

@@ -4,7 +4,7 @@ const proxyquire = require('proxyquire').noPreserveCache().noCallThru();
 const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
-const insertTz   = require('../db/queries/insertTimezone.js');
+// const insertTz   = require('../db/queries/insertTimezone.js');
 
 /* eslint-disable global-require */
 const TimezoneCommand = proxyquire(
@@ -27,12 +27,6 @@ describe('#run', () => {
   const validInput = 6;
   const invalidInput = 11;
 
-  const user  = {
-    id: 1,
-    username: 'test_user',
-    discriminator: '1234'
-  };
-
   describe('timezone upsertion', () => {
     context("when timezone is not included in moment's zone list", () => {
       it('throws invalid timezone exception', () => subject(
@@ -42,7 +36,7 @@ describe('#run', () => {
       }));
     });
 
-    context('when timezones obj does not include user inputted num', () => {
+    context('when timezones array does not include inputted number', () => {
       it('throws invalid timezone exception', () => subject(
         msg, invalidInput
       ).catch((ex) => {
@@ -51,19 +45,19 @@ describe('#run', () => {
     });
 
     context("when timezone is included in moment's zone list", () => {
-      it('upserts into table and returns rowCount of 1', () => insertTz(
-        [user.username, user.discriminator, validTz]
+      it('upserts into table and DMs user success msg', () => subject(
+        msg, validTz
       )
       .then((res) => {
-        expect(res).to.eq(1);
+        expect(res).to.eq('Your timezone has been set to America/Los_Angeles');
       }));
     });
 
-    context('when timezones obj includes user inputted number', () => {
-      it('upserts into table and returns rowCount of 1', () => insertTz(
-        [user.username, user.discriminator, validInput]
+    context('when timezones array includes user inputted number', () => {
+      it('upserts into table and DMs user success msg', () => subject(
+        msg, validInput
       ).then((res) => {
-        expect(res).to.eq(1);
+        expect(res).to.eq('Your timezone has been set to America/Anchorage');
       }));
     });
   });

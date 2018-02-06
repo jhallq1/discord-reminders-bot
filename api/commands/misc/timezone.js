@@ -3,16 +3,16 @@ const exceptions  = require('../../util/exceptions.json');
 const insertTz    = require('../../../db/queries/insertTimezone.js');
 const moment      = require('moment-timezone');
 
-const timezones = {
-  1: 'America/Puerto_Rico',
-  2: 'America/New_York',
-  3: 'America/Chicago',
-  4: 'America/Denver',
-  5: 'America/Phoenix',
-  6: 'America/Los_Angeles',
-  7: 'America/Anchorage',
-  8: 'Pacific/Honolulu'
-};
+const timezones = [
+  'America/Puerto_Rico',
+  'America/New_York',
+  'America/Chicago',
+  'America/Denver',
+  'America/Phoenix',
+  'America/Los_Angeles',
+  'America/Anchorage',
+  'Pacific/Honolulu'
+];
 
 const command = {
   name: 'timezone',
@@ -44,10 +44,9 @@ module.exports = class TimezoneCommand extends Command {
   }
 
   run(msg, { content }) {
-    if (
-      !Object.prototype.hasOwnProperty.call(timezones, content) &&
-      !moment.tz.names().includes(content)
-    ) {
+    const tz = typeof content === 'number' ? timezones[content] : content;
+
+    if (!moment.tz.names().includes(tz)) {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_timezone)));
     }
@@ -55,8 +54,8 @@ module.exports = class TimezoneCommand extends Command {
     return insertTz([
       msg.message.author.username,
       msg.message.author.discriminator,
-      content
+      tz
     ])
-    .then(() => msg.direct(`Your timezone has been set to ${content}`));
+    .then(() => msg.direct(`Your timezone has been set to ${tz}`));
   }
 };
