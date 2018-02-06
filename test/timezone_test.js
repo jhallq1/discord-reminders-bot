@@ -24,6 +24,9 @@ describe('#run', () => {
   const invalidTz = 'America/San_Diego';
   const validTz = 'America/Los_Angeles';
 
+  const validInput = 6;
+  const invalidInput = 11;
+
   const user  = {
     id: 1,
     username: 'test_user',
@@ -39,11 +42,27 @@ describe('#run', () => {
       }));
     });
 
+    context('when timezones obj does not include user inputted num', () => {
+      it('throws invalid timezone exception', () => subject(
+        msg, invalidInput
+      ).catch((ex) => {
+        expect(ex).to.eq(exceptions.invalid_timezone);
+      }));
+    });
+
     context("when timezone is included in moment's zone list", () => {
       it('upserts into table and returns rowCount of 1', () => insertTz(
         [user.username, user.discriminator, validTz]
       )
       .then((res) => {
+        expect(res).to.eq(1);
+      }));
+    });
+
+    context('when timezones obj includes user inputted number', () => {
+      it('upserts into table and returns rowCount of 1', () => insertTz(
+        [user.username, user.discriminator, validInput]
+      ).then((res) => {
         expect(res).to.eq(1);
       }));
     });

@@ -49,7 +49,7 @@ module.exports = class TimezoneCommand extends Command {
       !moment.tz.names().includes(content)
     ) {
       return new Promise((resolve, reject) =>
-        reject(msg.say(exceptions.invalid_timezone_new)));
+        reject(msg.say(exceptions.invalid_timezone)));
     }
 
     return insertTz([
