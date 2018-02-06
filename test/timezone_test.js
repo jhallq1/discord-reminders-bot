@@ -4,7 +4,6 @@ const proxyquire = require('proxyquire').noPreserveCache().noCallThru();
 const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
-// const insertTz   = require('../db/queries/insertTimezone.js');
 
 /* eslint-disable global-require */
 const TimezoneCommand = proxyquire(
