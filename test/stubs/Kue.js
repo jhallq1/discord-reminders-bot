@@ -20,7 +20,7 @@ const kue = {
     fn();
     return kue;
   },
-  // cant fire callback due to stubbing singleton
+  // Cannot fire callback due to stubbing singleton
   process: (key, cb) => {
     kue.process_data = { key, cb };
     return kue;
