@@ -74,7 +74,7 @@ describe('#run', () => {
     const delay        = 8.64 * (10 ** 7);
 
     context('same as server', () => {
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, 'UTC']
       )
       .then(() => subject(msg, target, content, reminderTime))
@@ -88,7 +88,7 @@ describe('#run', () => {
     context('behind server', () => {
       const timezone = 'America/Los_Angeles';
 
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, timezone]
       )
       .then(() => subject(msg, target, content, reminderTime))
@@ -102,7 +102,7 @@ describe('#run', () => {
     context('ahead of server', () => {
       const offset = 'Asia/Tokyo';
 
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, offset]
       )
       .then(() => subject(msg, target, content, reminderTime))
