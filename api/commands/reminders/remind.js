@@ -46,9 +46,9 @@ const command = {
   name: 'remind',
   group: 'reminders',
   memberName: 'remind',
-  description: 'Set a new reminder. When using the one-line/short-hand ' +
-    'version of this command, enclose the reminder task in double quotes ' +
-    'for more accurate parsing. See examples below: ',
+  description: `Set a new reminder. When using the one-line/short-hand
+    version of this command, enclose the reminder task in double quotes
+    for more accurate parsing.`,
   examples: ['rbot remind @user "Tell Kiba he\'s a good boy" tomorrow morning',
     'rbot remind @user "Pick up the dog" in 4 hours'],
   args: [
