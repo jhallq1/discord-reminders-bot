@@ -20,12 +20,12 @@ const kue = {
     fn();
     return kue;
   },
+  // cant fire callback due to stubbing singleton
   process: (key, cb) => {
     kue.process_data = { key, cb };
-    cb(() => { kue.processed = true; });
     return kue;
   },
-  processed: false
+  delayInMilliseconds: null
 };
 
 module.exports = kue;

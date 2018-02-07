@@ -7,13 +7,14 @@ const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
+const jobQueue   = require('./stubs/Kue.js');
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
   '../api/commands/reminders/remind.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    kue: require('./stubs/Kue.js'),
+    kue: jobQueue,
     '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
@@ -79,7 +80,7 @@ describe('#run', () => {
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
@@ -93,7 +94,7 @@ describe('#run', () => {
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
@@ -107,7 +108,7 @@ describe('#run', () => {
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
