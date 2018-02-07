@@ -7,13 +7,14 @@ const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
+const jobQueue   = require('./stubs/Kue.js');
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
   '../api/commands/reminders/remind.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    kue: require('./stubs/Kue.js'),
+    kue: jobQueue,
     '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
@@ -73,13 +74,13 @@ describe('#run', () => {
     const delay        = 8.64 * (10 ** 7);
 
     context('same as server', () => {
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, 'UTC']
       )
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
@@ -87,13 +88,13 @@ describe('#run', () => {
     context('behind server', () => {
       const timezone = 'America/Los_Angeles';
 
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, timezone]
       )
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
@@ -101,13 +102,13 @@ describe('#run', () => {
     context('ahead of server', () => {
       const offset = 'Asia/Tokyo';
 
-      it('adds two hours to the server time', () => insertTz(
+      it('adds twenty-four hours to the server time', () => insertTz(
         [target.username, target.discriminator, offset]
       )
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
         expect(res.processed).to.eq(true);
-        expect(roundTimestampToDay(res.delayInMilliseconds))
+        expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
     });
