@@ -22,18 +22,19 @@ const command = {
   args: [
     {
       key: 'content',
-      prompt: 'Quick-select your timezone by entering a number ' +
-        'from the following list. Otherwise, enter the name of your zone ' +
-        'if it is not included in the following list. ' +
-        '[1] Atlantic ' +
-        '[2] Eastern ' +
-        '[3] Central ' +
-        '[4] Mountain ' +
-        '[5] MST ' +
-        '[6] Pacific ' +
-        '[7] Alaska ' +
-        '[8] Hawaii',
-      type: 'number'
+      prompt: `Quick-select your timezone by entering a number from the
+        following list. Otherwise, enter the name of your zone if it is not
+        included here.
+
+        [1] Atlantic
+        [2] Eastern
+        [3] Central
+        [4] Mountain
+        [5] MST
+        [6] Pacific
+        [7] Alaska
+        [8] Hawaii`,
+      type: 'string'
     }
   ]
 };
@@ -44,7 +45,7 @@ module.exports = class TimezoneCommand extends Command {
   }
 
   run(msg, { content }) {
-    const tz = typeof content === 'number' ? timezones[content] : content;
+    const tz = timezones[content - 1] || content;
 
     if (!moment.tz.names().includes(tz)) {
       return new Promise((resolve, reject) =>

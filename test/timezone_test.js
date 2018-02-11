@@ -56,7 +56,7 @@ describe('#run', () => {
       it('upserts into table and DMs user success msg', () => subject(
         msg, validInput
       ).then((res) => {
-        expect(res).to.eq('Your timezone has been set to America/Anchorage');
+        expect(res).to.eq('Your timezone has been set to America/Los_Angeles');
       }));
     });
   });
