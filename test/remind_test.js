@@ -79,7 +79,6 @@ describe('#run', () => {
       )
       .then(() => subject(msg, target, content, reminderTime))
       .then((res) => {
-        expect(res.processed).to.eq(true);
         expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
@@ -92,8 +91,7 @@ describe('#run', () => {
         [target.username, target.discriminator, timezone]
       )
       .then(() => subject(msg, target, content, reminderTime))
-      .then((res) => {
-        expect(res.processed).to.eq(true);
+      .then(() => {
         expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
@@ -106,8 +104,7 @@ describe('#run', () => {
         [target.username, target.discriminator, offset]
       )
       .then(() => subject(msg, target, content, reminderTime))
-      .then((res) => {
-        expect(res.processed).to.eq(true);
+      .then(() => {
         expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));

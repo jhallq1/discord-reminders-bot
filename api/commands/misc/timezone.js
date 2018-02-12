@@ -3,17 +3,37 @@ const exceptions  = require('../../util/exceptions.json');
 const insertTz    = require('../../../db/queries/insertTimezone.js');
 const moment      = require('moment-timezone');
 
+const timezones = [
+  'America/Puerto_Rico',
+  'America/New_York',
+  'America/Chicago',
+  'America/Denver',
+  'America/Phoenix',
+  'America/Los_Angeles',
+  'America/Anchorage',
+  'Pacific/Honolulu'
+];
+
 const command = {
   name: 'timezone',
   group: 'misc',
   memberName: 'timezone',
-  description: 'Set your timezone. To view a list of zones, please visit ' +
-    '`https://en.wikipedia.org/wiki/List_of_tz_database_time_zones`',
-  examples: ['rbot timezone America/Los_Angeles'],
+  description: 'Select from a list of timezones.',
   args: [
     {
       key: 'content',
-      prompt: 'What is your timezone?',
+      prompt: `Quick-select your timezone by entering a number from the
+        following list. Otherwise, enter the name of your zone if it is not
+        included here.
+
+        [1] Atlantic
+        [2] Eastern
+        [3] Central
+        [4] Mountain
+        [5] MST
+        [6] Pacific
+        [7] Alaska
+        [8] Hawaii`,
       type: 'string'
     }
   ]
@@ -25,15 +45,18 @@ module.exports = class TimezoneCommand extends Command {
   }
 
   run(msg, { content }) {
-    if (!moment.tz.names().includes(content)) {
-      return msg.say(exceptions.invalid_timezone);
+    const tz = timezones[content - 1] || content;
+
+    if (!moment.tz.names().includes(tz)) {
+      return new Promise((resolve, reject) =>
+        reject(msg.say(exceptions.invalid_timezone)));
     }
 
     return insertTz([
       msg.message.author.username,
       msg.message.author.discriminator,
-      content
+      tz
     ])
-    .then(() => msg.direct(`Your timezone has been set to ${content}`));
+    .then(() => msg.direct(`Your timezone has been set to ${tz}`));
   }
 };

@@ -1,10 +1,12 @@
 const commandoMsg = {
   say: msg => msg,
-  direct: () => {
-    commandoMsg.processed = true;
-    return commandoMsg;
-  },
-  processed: false
+  direct: msg => msg,
+  message: {
+    author: {
+      username: 'test_user',
+      discriminator: '1234'
+    }
+  }
 };
 
 module.exports = commandoMsg;
