@@ -75,6 +75,11 @@ module.exports = class RemindCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
+    const author = {
+      username: msg.message.author.username,
+      discriminator: msg.message.author.discriminator
+    };
+
     let parsedTime;
 
     if (!chrono.parseDate(datetime)) {
@@ -82,7 +87,7 @@ module.exports = class RemindCommand extends Command {
         reject(msg.say(exceptions.invalid_datetime_format)));
     }
 
-    return selectTz([target.username, target.discriminator])
+    return selectTz([author.username, author.discriminator])
     .then((timezone) => {
       if (!timezone) {
         return Promise.reject(msg.say(exceptions.timezone_not_set));
