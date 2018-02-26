@@ -24,11 +24,12 @@ queue.process('reminder', (job, done) => {
   done();
 });
 
-const reminderLater = (target, content, parsedTime) => new Promise(
+const reminderLater = (target, content, parsedTime, author) => new Promise(
   (resolve, reject) => {
     queue.create('reminder', {
       target_id: target.id,
-      content
+      content,
+      author
     })
     .delay(parsedTime.delayAmt)
     .save((err) => {
@@ -99,7 +100,7 @@ module.exports = class RemindCommand extends Command {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 
-      return reminderLater(target, content, parsedTime);
+      return reminderLater(target, content, parsedTime, author);
     })
     .then(() => msg.direct(
       `${parsedTime.parsed}, ${target} will be reminded "${content}"`
