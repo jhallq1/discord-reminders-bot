@@ -65,7 +65,7 @@ module.exports = class RemindCommand extends Command {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 
-      return addToQueue(target, content, parsedTime);
+      return addToQueue(target, content, parsedTime, author);
     })
     .then(() => msg.direct(
       `${parsedTime.parsed}, ${target} will be reminded "${content}"`
