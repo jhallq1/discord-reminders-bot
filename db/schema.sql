@@ -25,3 +25,5 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.users
     OWNER to postgres;
+
+ALTER TABLE public.users ADD COLUMN job_ids text[];
