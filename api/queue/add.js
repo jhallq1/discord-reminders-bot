@@ -7,7 +7,9 @@ module.exports = (target, content, parsedTime) => {
   };
 
   const options = {
-    delay: parsedTime.delayAmt
+    delay: parsedTime.delayAmt,
+    removeOnComplete: true,
+    removeOnFail: true
   };
 
   queue.add(data, options);
