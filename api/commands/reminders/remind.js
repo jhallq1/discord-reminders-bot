@@ -1,31 +1,11 @@
+require('../../queue/process.js');
+
 const { Command } = require('discord.js-commando');
 const chrono      = require('chrono-node');
-const queue       = require('../../queue.js');
-const bot         = require('../../bot.js');
+const addToQueue  = require('../../queue/add.js');
 const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
 const parseDate   = require('../../util/translateDatetime.js');
-
-queue.process((job, done) => {
-  bot.fetchUser(job.data.target_id).then((user) => {
-    user.send(job.data.content);
-  })
-  .catch(exception => Promise.reject(exception));
-  done();
-});
-
-const reminderLater = (target, content, parsedTime) => {
-  const data = {
-    target_id: target.id,
-    content
-  };
-
-  const options = {
-    delay: parsedTime.delayAmt
-  };
-
-  queue.add(data, options);
-};
 
 const command = {
   name: 'remind',
@@ -85,7 +65,7 @@ module.exports = class RemindCommand extends Command {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 
-      return reminderLater(target, content, parsedTime);
+      return addToQueue(target, content, parsedTime);
     })
     .then(() => msg.direct(
       `${parsedTime.parsed}, ${target} will be reminded "${content}"`
