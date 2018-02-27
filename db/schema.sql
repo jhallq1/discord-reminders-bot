@@ -11,9 +11,10 @@ ALTER SEQUENCE public.id_seq
 CREATE TABLE IF NOT EXISTS public.users
 (
     id bigint NOT NULL DEFAULT nextval('id_seq'::regclass),
-    username text COLLATE pg_catalog."default" NOT NULL,
-    username_discriminator text COLLATE pg_catalog."default" NOT NULL,
+    username varchar COLLATE pg_catalog."default" NOT NULL,
+    username_discriminator varchar COLLATE pg_catalog."default" NOT NULL,
     timezone text COLLATE pg_catalog."default" NOT NULL,
+    job_ids text[] COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT user_timezones_pkey PRIMARY KEY (id),
     CONSTRAINT username_discriminator UNIQUE (username_discriminator)
 )
