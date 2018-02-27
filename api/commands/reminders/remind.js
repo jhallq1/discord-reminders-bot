@@ -24,13 +24,7 @@ const reminderLater = (target, content, parsedTime) => {
     delay: parsedTime.delayAmt
   };
 
-  queue.add(data, options)
-  .then(() => {
-    console.log(`added`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  queue.add(data, options);
 };
 
 const command = {

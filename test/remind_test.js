@@ -7,14 +7,14 @@ const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
-const jobQueue   = require('./stubs/Kue.js');
+const jobQueue   = require('./stubs/Queue.js');
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
   '../api/commands/reminders/remind.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    kue: jobQueue,
+    '../../queue.js': jobQueue,
     '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
@@ -78,7 +78,7 @@ describe('#run', () => {
         [target.username, target.discriminator, 'UTC']
       )
       .then(() => subject(msg, target, content, reminderTime))
-      .then((res) => {
+      .then(() => {
         expect(roundTimestampToDay(jobQueue.delayInMilliseconds))
         .to.eq(delay);
       }));
