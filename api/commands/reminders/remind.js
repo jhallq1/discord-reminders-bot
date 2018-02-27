@@ -1,45 +1,37 @@
 const { Command } = require('discord.js-commando');
 const chrono      = require('chrono-node');
-const kue         = require('kue');
+const queue       = require('../../queue.js');
 const bot         = require('../../bot.js');
-const keys        = require('../../keys.json');
 const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
 const parseDate   = require('../../util/translateDatetime.js');
 
-const queue = kue.createQueue({
-  redis: {
-    port: keys.redisPort,
-    host: keys.redisHost,
-    auth: keys.redisKey
-  }
-});
-
-queue.process('reminder', (job, done) => {
+queue.process((job, done) => {
   bot.fetchUser(job.data.target_id).then((user) => {
     user.send(job.data.content);
   })
   .catch(exception => Promise.reject(exception));
-
   done();
 });
 
-const reminderLater = (target, content, parsedTime) => new Promise(
-  (resolve, reject) => {
-    queue.create('reminder', {
-      target_id: target.id,
-      content
-    })
-    .delay(parsedTime.delayAmt)
-    .save((err) => {
-      if (err) {
-        reject(exceptions.queue_save);
-      }
+const reminderLater = (target, content, parsedTime) => {
+  const data = {
+    target_id: target.id,
+    content
+  };
 
-      resolve();
-    });
-  }
-);
+  const options = {
+    delay: parsedTime.delayAmt
+  };
+
+  queue.add(data, options)
+  .then(() => {
+    console.log(`added`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
 
 const command = {
   name: 'remind',
