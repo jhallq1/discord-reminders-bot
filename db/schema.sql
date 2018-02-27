@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS public.users
     username varchar COLLATE pg_catalog."default" NOT NULL,
     username_discriminator varchar COLLATE pg_catalog."default" NOT NULL,
     timezone text COLLATE pg_catalog."default" NOT NULL,
-    job_ids text[] COLLATE pg_catalog."default" NOT NULL,
+    job_ids text[] COLLATE pg_catalog."default",
     CONSTRAINT user_timezones_pkey PRIMARY KEY (id),
     CONSTRAINT username_discriminator UNIQUE (username_discriminator)
 )
