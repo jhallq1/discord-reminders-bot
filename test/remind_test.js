@@ -8,13 +8,14 @@ const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 const insertTz   = require('../db/queries/insertTimezone.js');
 const jobQueue   = require('./stubs/Queue.js');
+const addJob     = require('./stubs/addToQueue.js');
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
   '../api/commands/reminders/remind.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    '../../queue.js': jobQueue,
+    '../../queue/add.js': addJob,
     '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
