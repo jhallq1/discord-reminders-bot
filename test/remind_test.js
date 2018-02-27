@@ -16,6 +16,7 @@ const RemindCommand = proxyquire(
   {
     'discord.js-commando': require('./stubs/Command.js'),
     '../../queue/add.js': addJob,
+    '../../queue/process.js': jobQueue,
     '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
   }
 );
