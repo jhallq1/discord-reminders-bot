@@ -1,9 +1,10 @@
 const queue = require('./queue.js');
 
-module.exports = (target, content, parsedTime) => {
+module.exports = (target, content, parsedTime, author) => {
   const data = {
     target_id: target.id,
-    content
+    content,
+    author
   };
 
   const options = {
