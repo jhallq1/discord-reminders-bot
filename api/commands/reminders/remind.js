@@ -7,7 +7,6 @@ const exceptions  = require('../../util/exceptions.json');
 const selectTz    = require('../../../db/queries/selectTimezone.js');
 const parseDate   = require('../../util/translateDatetime.js');
 const generateID  = require('../../util/generateJobID.js');
-const updateIds   = require('../../../db/queries/updateJobIds.js');
 
 const command = {
   name: 'remind',
@@ -71,7 +70,6 @@ module.exports = class RemindCommand extends Command {
 
       return addToQueue(target, content, parsedTime, author, jobID);
     })
-    .then(() => updateIds([author.username, author.discriminator, jobID]))
     .then(() => msg.direct(
       `${parsedTime.parsed}, ${target} will be reminded "${content}"`
     ));
