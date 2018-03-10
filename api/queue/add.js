@@ -1,6 +1,6 @@
 const queue = require('./queue.js');
 
-module.exports = (target, content, parsedTime, author, jobID) => {
+module.exports = (target, content, parsedTime, author) => {
   const data = {
     target: {
       id: target.target_id,
@@ -13,9 +13,7 @@ module.exports = (target, content, parsedTime, author, jobID) => {
 
   const options = {
     delay: parsedTime.delayAmt,
-    removeOnComplete: false,
-    removeOnFail: false,
-    jobId: jobID
+    removeOnFail: false
   };
 
   queue.add(data, options);
