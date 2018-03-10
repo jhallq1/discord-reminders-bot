@@ -19,7 +19,9 @@ db.connect((err) => {
     db.end();
   })
   .catch(() => {
-    console.error(err.stack);
+    if (err) {
+      console.error(err.stack);
+    }
     db.end();
   });
 });
