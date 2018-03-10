@@ -1,41 +1,44 @@
+const _     = require('lodash');
 const queue = require('./queue.js');
 const bot   = require('../bot.js');
 
-module.exports = (ids, author) => {
-  const promises = [];
+const noReminders = author => bot.fetchUser(author).then((user) => {
+  user.send('No active reminders to display.');
+});
 
-  ids.forEach((id) => {
-    promises.push(queue.getJob(id));
-  });
+function formatReminder(idx, { datetime, target, content }) {
+  return `[${idx}] ${datetime}: @${target} will be reminded "${content}"\n`;
+}
 
-  Promise.all(promises).then((res) => {
-    // console.log(1, res);
-    const jobs = [];
-    for (let i = 0; i < res.length; i++) {
-      if (res[i]) {
-        jobs.push(res[i]);
-      }
-    }
+module.exports = (author) => {
+  const reminders = [];
 
-    if (jobs.length > 0) {
-      const job = {};
-      let reminders = '';
-
-      for (let j = 0; j < jobs.length; j++) {
-        job.target = jobs[j].data.target.username;
-        job.content = jobs[j].data.content;
-        job.datetime = jobs[j].data.parsedTime.parsed;
-
-        reminders += `${job.datetime}: @${job.target} will be reminded
-        "${job.content}".\n`;
-      }
-      bot.fetchUser(author).then((user) => {
-        user.send(reminders);
+  queue.getDelayed().then((res) => {
+    if (res) {
+      res.forEach((item) => {
+        if (_.isEqual(item.data.author, author)) {
+          reminders.push({
+            target: item.data.target.username,
+            content: item.data.content,
+            datetime: item.data.parsedTime.parsed
+          });
+        }
       });
     } else {
+      noReminders(author);
+    }
+  }).then(() => {
+    if (reminders.length) {
+      let message = '';
+      for (let i = 0; i < reminders.length; i++) {
+        message += formatReminder(i + 1, reminders[i]);
+      }
+
       bot.fetchUser(author).then((user) => {
-        user.send('No active reminders to display.');
+        user.send(message);
       });
+    } else {
+      noReminders(author);
     }
   });
 };
