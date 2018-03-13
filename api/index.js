@@ -1,6 +1,7 @@
 const path = require('path');
 const bot  = require('./bot.js');
 const db   = require('./../db/index.js');
+const redis = require('./redis/client.js');
 const keys = require('./keys.json');
 
 bot.registry
@@ -25,4 +26,8 @@ db.connect((err) => {
   } else {
     console.log('Connected to db');
   }
+});
+
+redis.on('error', function (err) {
+    console.log("Error " + err);
 });
