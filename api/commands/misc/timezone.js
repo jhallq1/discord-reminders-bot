@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const exceptions  = require('../../util/exceptions.json');
 const moment      = require('moment-timezone');
-const redis       = require('../../redis/client.js');
+const tzStore     = require('../../redis/client.js').timezones;
 
 const timezones = [
   'America/Puerto_Rico',
@@ -52,7 +52,7 @@ module.exports = class TimezoneCommand extends Command {
         reject(msg.say(exceptions.invalid_timezone)));
     }
 
-    return redis.hsetAsync(msg.message.author.id, ['timezone', tz])
+    return tzStore.setAsync(msg.message.author.id, tz)
     .then(() => msg.direct(`Your timezone has been set to ${tz}`))
     .catch((err) => {
       console.error(err.stack);

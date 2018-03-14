@@ -1,7 +1,10 @@
+require('./redis/processReminders.js');
+
 const path = require('path');
 const bot  = require('./bot.js');
 const db   = require('./../db/index.js');
-const redis = require('./redis/client.js');
+const remindersClient = require('./redis/client.js').reminders;
+const timezonesClient = require('./redis/client.js').timezones;
 const keys = require('./keys.json');
 
 bot.registry
@@ -28,6 +31,10 @@ db.connect((err) => {
   }
 });
 
-redis.on('error', function (err) {
-    console.log("Error " + err);
+remindersClient.on('connect', () => {
+  remindersClient.select(0);
+});
+
+timezonesClient.on('connect', () => {
+  timezonesClient.select(1);
 });

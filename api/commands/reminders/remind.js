@@ -1,10 +1,11 @@
-require('../../queue/process.js');
+// require('../../queue/process.js');
 
-const { Command } = require('discord.js-commando');
-const chrono      = require('chrono-node');
-const exceptions  = require('../../util/exceptions.json');
-const parseDate   = require('../../util/translateDatetime.js');
-const redis       = require('../../redis/client.js');
+const { Command }   = require('discord.js-commando');
+const chrono        = require('chrono-node');
+const exceptions    = require('../../util/exceptions.json');
+const parseDate     = require('../../util/translateDatetime.js');
+const tzStore       = require('../../redis/client.js').timezones;
+const reminderStore = require('../../redis/client.js').reminders;
 
 const command = {
   name: 'remind',
@@ -42,49 +43,48 @@ module.exports = class RemindCommand extends Command {
   run(msg, { target, content, datetime }) {
     const { author } = msg.message;
 
-    const data = {
-      reminders: []
-    };
+    let timezone;
+    let reminders = [];
+    let remindersJson;
 
     if (!chrono.parseDate(datetime)) {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_datetime_format)));
     }
 
-    return redis.hgetallAsync(author.id)
-    .then((res) => {
-      if (!res || !res.timezone) {
+    return tzStore.getAsync(author.id)
+    .then((tz) => {
+      if (!tz) {
         msg.say(exceptions.timezone_not_set);
       } else {
-        if (res.reminders) {
-          data.reminders = JSON.parse(res.reminders);
-        }
-
-        data.timezone = res.timezone;
+        timezone = tz;
       }
     })
     .then(() => {
-      const parsedTime = parseDate(datetime, data.timezone);
+      const parsedTime = parseDate(datetime, timezone);
 
       if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 
-      data.reminders.push({
-        target: target.id,
-        parsedTime: parsedTime.parsed,
-        timeInMS: parsedTime.timeInMilliseconds,
-        content
-      });
+      return reminderStore.getAsync(parsedTime.timeInMS)
+      .then((existingReminders) => {
+        if (existingReminders) {
+          reminders = JSON.parse(existingReminders);
+        }
 
-      return redis.hsetAsync(author.id, [
-        'reminders',
-        JSON.stringify(data.reminders)
-      ])
-      .then(() => redis.hgetallAsync(author.id)
+        reminders.push({
+          target: target.id,
+          parsedTime: parsedTime.parsed,
+          content
+        });
+
+        remindersJson = JSON.stringify(reminders);
+      })
+      .then(() => reminderStore.setAsync(parsedTime.timeInMS, remindersJson))
       .then(() => msg.direct(
         `${parsedTime.parsed}, ${target} will be reminded "${content}"`
-      )))
+      ))
       .catch(err => console.error(err.stack));
     })
     .catch(err => console.error(err.stack));
