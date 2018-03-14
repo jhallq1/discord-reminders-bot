@@ -10,4 +10,7 @@ const connection = {
   password: keys.redisKey
 };
 
-module.exports = redis.createClient([connection]);
+module.exports = {
+  timezones: redis.createClient([connection]),
+  reminders: redis.createClient([connection])
+};

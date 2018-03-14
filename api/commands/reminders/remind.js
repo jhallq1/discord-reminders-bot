@@ -1,5 +1,3 @@
-// require('../../queue/process.js');
-
 const { Command }   = require('discord.js-commando');
 const chrono        = require('chrono-node');
 const exceptions    = require('../../util/exceptions.json');
