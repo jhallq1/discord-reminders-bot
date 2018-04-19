@@ -1,10 +1,5 @@
-const redis = require('fakeredis');
-const bluebird = require('bluebird');
-
-bluebird.promisifyAll(redis.RedisClient.prototype);
-
-const remindersClient = redis.createClient();
-const timezonesClient = redis.createClient();
+const remindersClient = require('./fakeRedis.js').reminders;
+const timezonesClient = require('./fakeRedis.js').timezones;
 
 before(() => {
   remindersClient.on('connect', () => {
