@@ -10,7 +10,8 @@ const TimezoneCommand = proxyquire(
   '../api/commands/misc/timezone.js',
   {
     'discord.js-commando': require('./stubs/Command.js'),
-    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
+    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)(),
+    'tzStore': require('./mocks/redisClient.js').timezones
   }
 );
 /* eslint-enable global-require */
