@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "proxyquire": "^2.0.1"
+    "proxyquire": "^2.0.1",
+    "redis-mock": "^0.27.0"
   },
   "engines": {
     "node": ">= 8.0.0"
