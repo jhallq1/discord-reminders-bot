@@ -46,7 +46,6 @@ module.exports = class TimezoneCommand extends Command {
 
   run(msg, { content }) {
     const tz = timezones[content - 1] || content;
-
     if (!moment.tz.names().includes(tz)) {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_timezone)));
