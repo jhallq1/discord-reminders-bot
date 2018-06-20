@@ -1,4 +1,4 @@
-const redis = require('redis-mock');
+const redis = require('redis');
 
 module.exports = {
   timezones: redis.createClient(),
