@@ -39,6 +39,7 @@ module.exports = class RemindCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
+    console.log(msg, target, content, datetime);
     const { author } = msg.message;
 
     let timezone;
