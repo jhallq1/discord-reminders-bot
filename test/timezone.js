@@ -19,19 +19,23 @@ const subject = (message, content) => new TimezoneCommand({}).run(
 );
 
 describe('Timezone Command', () => {
+  const invalidInput = 'losangeles';
+  const validInput = 'America/Chicago';
+  const expectedSuccessMsg = 'Your timezone has been set to America/Chicago';
+
   context("when user inputs invalid timezone", () => {
     it('throws invalid_timezone error', () => subject(
-      msg, 'Los_Angeles'
+      msg, invalidInput
     ).catch((error) => {
       expect(error).to.eq(exceptions.invalid_timezone);
     }));
   });
 
   context("when user inputs valid timezone", () => {
-    it('returns success update message', () => subject(
-      msg, 'America/Los_Angeles'
+    it('returns successful timezone update message', () => subject(
+      msg, validInput
     ).then((res) => {
-      expect(res).to.eq('Your timezone has been set to America/Los_Angeles');
+      expect(res).to.eq(expectedSuccessMsg);
     }));
   });
 });
