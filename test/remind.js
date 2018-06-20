@@ -85,7 +85,7 @@ describe('Remind Command', () => {
       it('returns successful reminder creation message', () => subject(
         msg, reminder
       ).then((res) => {
-        expect(res).to.contain(`will be reminded "This is a test reminder"`);
+        expect(res).to.have.string(`will be reminded "This is a test reminder"`);
       }));
     });
   });
