@@ -39,7 +39,6 @@ module.exports = class RemindCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
-    console.log(msg, target, content, datetime);
     const { author } = msg.message;
 
     let timezone;
@@ -68,6 +67,7 @@ module.exports = class RemindCommand extends Command {
       }
     })
     .then(() => {
+      console.log(1);
       const parsedTime = parseDate(datetime, timezone);
 
       if (parsedTime.delayAmt < 500) {
