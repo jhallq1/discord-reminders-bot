@@ -57,7 +57,7 @@ module.exports = class RemindCommand extends Command {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_datetime_format)));
     }
-    console.log(1, author.id);
+    console.log(tzStore.getAsync(author.id));
     return tzStore.getAsync(author.id)
     .then((tz) => {
       if (!tz) {
