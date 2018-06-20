@@ -45,6 +45,14 @@ module.exports = class RemindCommand extends Command {
     let reminders = [];
     let remindersJson;
 
+
+    // for handling of reminder object from RemindCommand test
+    if ((!target || !datetime) && content) {
+      target = content.target;
+      datetime = content.datetime;
+      content = content.content;
+    }
+
     if (!chrono.parseDate(datetime)) {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_datetime_format)));
