@@ -60,6 +60,7 @@ module.exports = class RemindCommand extends Command {
 
     return tzStore.getAsync(author.id)
     .then((tz) => {
+            console.log(1, tz);
       if (!tz) {
         msg.say(exceptions.timezone_not_set);
       } else {
@@ -68,7 +69,7 @@ module.exports = class RemindCommand extends Command {
     })
     .then(() => {
       const parsedTime = parseDate(datetime, timezone);
-      console.log(1, parsedTime);
+
       if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
