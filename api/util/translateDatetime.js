@@ -12,7 +12,7 @@ module.exports = (input, timezone) => {
     delayAmt,
     input,
     parsed: moment(parsedDate).tz(timezone).format('M/D/YYYY h:mm a'),
-    timeInMilliseconds: Date.parse(
+    timeInMS: Date.parse(
       moment(parsedDate).tz(timezone).format('M/D/YYYY h:mm a')
     ),
     offset: timeInZone.format('Z')

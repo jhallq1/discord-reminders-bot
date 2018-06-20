@@ -20,9 +20,12 @@ const subject = (message, content) => new RemindCommand({}).run(
 
 describe('Remind Command', () => {
   const reminder = {
-    target: 'test_user',
+    target: {
+      username: 'test_user',
+      id: '1234'
+    },
     content: 'This is a test reminder',
-    datetime: '5 minutes from now'
+    datetime: 'in 1 hour'
   };
 
   context('user does not have a timezone set', () => {
@@ -43,27 +46,47 @@ describe('Remind Command', () => {
 
   context('user has a timezone set', () => {
     context('user inputs datetime in the past', () => {
-      it('throws past_time error', () => {
-        reminder.datetime = "five minutes ago";
+      before(() => {
+        reminder.datetime = 'five minutes ago';
+      });
 
+      it('throws past_time error', () => {
         return subject(
           msg, reminder
         ).catch((error) => {
           expect(error).to.eq(exceptions.past_time);
         });
       });
+
+      after(() => {
+        reminder.datetime = 'in 1 hour';
+      });
     });
 
     context('user inputs invalid datetime format', () => {
-      it('throws invalid_datetime_format error', () => {
-        reminder.datetime = "1 hour";
+      before(() => {
+        reminder.datetime = '1 hour';
+      });
 
+      it('throws invalid_datetime_format error', () => {
         return subject(
           msg, reminder
         ).catch((error) => {
           expect(error).to.eq(exceptions.invalid_datetime_format);
         });
       });
+
+      after(() => {
+        reminder.datetime = 'in 1 hour';
+      });
+    });
+
+    context('when user inputs valid reminder', () => {
+      it('returns successful reminder creation message', () => subject(
+        msg, reminder
+      ).then((res) => {
+        expect(res).to.contain(`will be reminded "This is a test reminder"`);
+      }));
     });
   });
 });
