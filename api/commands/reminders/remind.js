@@ -68,11 +68,11 @@ module.exports = class RemindCommand extends Command {
     })
     .then(() => {
       const parsedTime = parseDate(datetime, timezone);
-
+      console.log(1, parsedTime);
       if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
-      console.log(1, parsedTime);
+
       return reminderStore.getAsync(parsedTime.timeInMS)
       .then((existingReminders) => {
         if (existingReminders) {
