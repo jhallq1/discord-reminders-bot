@@ -57,10 +57,9 @@ module.exports = class RemindCommand extends Command {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_datetime_format)));
     }
-
+    console.log(1, author.id);
     return tzStore.getAsync(author.id)
     .then((tz) => {
-            console.log(1, tz);
       if (!tz) {
         msg.say(exceptions.timezone_not_set);
       } else {
