@@ -45,7 +45,7 @@ module.exports = class RemindCommand extends Command {
     let reminders = [];
     let remindersJson;
 
-
+console.log(0, author)
     // for handling of reminder object from RemindCommand test
     if ((!target || !datetime) && content) {
       target = content.target;
@@ -60,6 +60,7 @@ module.exports = class RemindCommand extends Command {
 
     return tzStore.getAsync(author.id)
     .then((tz) => {
+console.log(1, tz)
       if (!tz) {
         msg.say(exceptions.timezone_not_set);
       } else {
@@ -68,7 +69,7 @@ module.exports = class RemindCommand extends Command {
     })
     .then(() => {
       const parsedTime = parseDate(datetime, timezone);
-
+console.log(2, parsedTime)
       if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
@@ -79,7 +80,7 @@ module.exports = class RemindCommand extends Command {
           reminders = JSON.parse(existingReminders);
         }
 
-console.log(target, parsedTime)
+console.log(3, target, parsedTime)
         reminders.push({
           target: target.id,
           parsedTime: parsedTime.parsed,
