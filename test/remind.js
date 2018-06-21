@@ -1,6 +1,7 @@
 /* global describe before after context it */
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
+const tzStore    = require('../api/redis/client.js').timezones;
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 
@@ -80,10 +81,18 @@ describe('Remind Command', () => {
     });
 
     context('when user inputs valid reminder', () => {
+      before(() => {
+        tzStore.setAsync(msg.message.author.id, 'America/Los_Angeles');
+      });
+
       it('returns successful reminder creation message', () => {
 	      return subject(msg, reminder).then((res) => {
           expect(res).to.contain(`will be reminded "This is a test reminder"`);
         });
+      });
+
+      after(() => {
+        tzStore.delAsync(msg.message.author.id);
       });
     });
   });
