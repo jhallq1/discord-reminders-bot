@@ -69,9 +69,7 @@ describe('Remind Command', () => {
       });
 
       it('throws invalid_datetime_format error', () => {
-        return subject(
-          msg, reminder
-        ).catch((error) => {
+        return subject(msg, reminder).catch((error) => {
           expect(error).to.eq(exceptions.invalid_datetime_format);
         });
       });
@@ -83,9 +81,7 @@ describe('Remind Command', () => {
 
     context('when user inputs valid reminder', () => {
       it('returns successful reminder creation message', () => {
-	subject(
-          msg, reminder
-        ).then((res) => {
+	      return subject(msg, reminder).then((res) => {
           expect(res).to.contain(`will be reminded "This is a test reminder"`);
         });
       });
