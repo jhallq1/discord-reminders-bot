@@ -11,6 +11,6 @@ const connection = {
 };
 
 module.exports = {
-  reminders: redis.createClient([connection]),
-  timezones: redis.createClient([connection])
+  timezones: redis.createClient([connection]),
+  reminders: redis.createClient([connection])
 };
