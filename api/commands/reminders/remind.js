@@ -62,7 +62,7 @@ console.log(0, author)
     .then((tz) => {
 console.log(1, tz)
       if (!tz) {
-        msg.say(exceptions.timezone_not_set);
+        return Promise.reject(msg.say(exceptions.timezone_not_set));
       } else {
         timezone = tz;
       }

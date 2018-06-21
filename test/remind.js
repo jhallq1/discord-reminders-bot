@@ -82,11 +82,13 @@ describe('Remind Command', () => {
     });
 
     context('when user inputs valid reminder', () => {
-      it('returns successful reminder creation message', () => subject(
-        msg, reminder
-      ).then((res) => {
-        expect(res).to.contain(`will be reminded "This is a test reminder"`);
-      }));
+      it('returns successful reminder creation message', () => {
+	subject(
+          msg, reminder
+        ).then((res) => {
+          expect(res).to.contain(`will be reminded "This is a test reminder"`);
+        });
+      });
     });
   });
 });
