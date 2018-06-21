@@ -23,7 +23,7 @@ describe('Timezone Command', () => {
   const validInput = 'America/Chicago';
   const expectedSuccessMsg = 'Your timezone has been set to America/Chicago';
 
-  context("when user inputs invalid timezone", () => {
+  context('when user inputs invalid timezone', () => {
     it('throws invalid_timezone error', () => subject(
       msg, invalidInput
     ).catch((error) => {
@@ -31,7 +31,7 @@ describe('Timezone Command', () => {
     }));
   });
 
-  context("when user inputs valid timezone", () => {
+  context('when user inputs valid timezone', () => {
     it('returns successful timezone update message', () => subject(
       msg, validInput
     ).then((res) => {
