@@ -23,3 +23,6 @@ currently in development. Thank you for your patience.
  - `cp ~/api/.keys.json ~/api/keys.json`
  - Change secrets in `keys.json` to your own
  - `npm start`
+
+## Testing
+To run the tests, you will need to start up a local Redis server.
