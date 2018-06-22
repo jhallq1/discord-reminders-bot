@@ -1,15 +1,10 @@
-const redis = require('redis');
-const keys = require('../keys.json');
-const bluebird = require('bluebird');
+const redis          = require('redis');
+const { port, host } = require('../keys.json');
+const bluebird       = require('bluebird');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 
-const connection = {
-  port: keys.redisPort,
-  host: keys.redisHost
-};
-
 module.exports = {
-  timezones: redis.createClient([connection]),
-  reminders: redis.createClient([connection])
+  timezones: redis.createClient(port, host),
+  reminders: redis.createClient(port, host)
 };
