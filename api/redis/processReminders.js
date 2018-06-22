@@ -3,9 +3,7 @@ const bot = require('../bot.js');
 
 const scanReminderStore = () => {
   return reminderStore.scanAsync(0).then((data) => {
-    if (data[1].length > 0) {
-      return data[1];
-    }
+    return data[1];
   });
 };
 
@@ -51,12 +49,15 @@ const sendReminders = (remindersArray, timestampsToClearArray) => {
 };
 
 const processReminders = () => {
-  let allTimestamps     = scanReminderStore();
-  let expiredTimestamps = getExpiredTimestamps(allTimestamps);
-  let remindersToSend   = getReminders(expiredTimestamps)[0];
-  let timestampsToClear = getReminders(expiredTimestamps)[1];
+  return scanReminderStore().then((allTimestamps) => {
+    if (allTimestamps.length > 0) {
+      let expiredTimestamps = getExpiredTimestamps(allTimestamps);
 
-  sendReminders(remindersToSend, timestampsToClear);
+      return getReminders(expiredTimestamps).then((res) => {
+        sendReminders(res[0], res[1]);
+      });
+    }
+  });
 };
 
 module.exports = {
@@ -67,4 +68,4 @@ module.exports = {
   processReminders: processReminders
 };
 
-setInterval(processReminders, 30000);
+setInterval(processReminders, 10000);
