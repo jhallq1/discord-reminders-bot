@@ -2,6 +2,7 @@
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const tzStore    = require('../api/redis/client.js').timezones;
+const reminders  = require('../api/redis/client.js').reminders;
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
 
@@ -92,7 +93,8 @@ describe('Remind Command', () => {
       });
 
       after(() => {
-        tzStore.delAsync(msg.message.author.id);
+        tzStore.flushallAsync();
+        reminders.flushallAsync();
       });
     });
   });

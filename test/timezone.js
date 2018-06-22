@@ -3,6 +3,7 @@ const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
 const exceptions = require('../api/util/exceptions.json');
+const tzStore    = require('../api/redis/client.js').timezones;
 
 /* eslint-disable global-require */
 const TimezoneCommand = proxyquire(
@@ -37,5 +38,9 @@ describe('Timezone Command', () => {
     ).then((res) => {
       expect(res).to.eq(expectedSuccessMsg);
     }));
+
+    after(() => {
+      tzStore.flushallAsync();
+    })
   });
 });
