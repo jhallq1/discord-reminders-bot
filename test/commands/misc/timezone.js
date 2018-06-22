@@ -1,18 +1,19 @@
 /* global describe context it */
 
-require('./helper.js');
+require('../../helper.js');
+
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
-const msg        = require('./stubs/message.js');
-const exceptions = require('../api/util/exceptions.json');
-const tzStore    = require('../api/redis/client.js').timezones;
+const msg        = require('../../stubs/message.js');
+const exceptions = require('../../../api/util/exceptions.json');
+const tzStore    = require('../../../api/redis/client.js').timezones;
 
 /* eslint-disable global-require */
 const TimezoneCommand = proxyquire(
-  '../api/commands/misc/timezone.js',
+  '../../../api/commands/misc/timezone.js',
   {
-    'discord.js-commando': require('./stubs/Command.js'),
-    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
+    'discord.js-commando': require('../../stubs/Command.js'),
+    '../../bot.js': new (require('../../stubs/CommandoClient.js').CommandoClient)()
   }
 );
 /* eslint-enable global-require */

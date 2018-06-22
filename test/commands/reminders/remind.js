@@ -1,19 +1,20 @@
 /* global describe before after context it */
 
-require('./helper.js');
+require('../../helper.js');
+
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
-const tzStore    = require('../api/redis/client.js').timezones;
-const reminders  = require('../api/redis/client.js').reminders;
-const msg        = require('./stubs/message.js');
-const exceptions = require('../api/util/exceptions.json');
+const tzStore    = require('../../../api/redis/client.js').timezones;
+const reminders  = require('../../../api/redis/client.js').reminders;
+const msg        = require('../../stubs/message.js');
+const exceptions = require('../../../api/util/exceptions.json');
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
-  '../api/commands/reminders/remind.js',
+  '../../../api/commands/reminders/remind.js',
   {
-    'discord.js-commando': require('./stubs/Command.js'),
-    '../../bot.js': new (require('./stubs/CommandoClient.js').CommandoClient)()
+    'discord.js-commando': require('../../stubs/Command.js'),
+    '../../bot.js': new (require('../../stubs/CommandoClient.js').CommandoClient)()
   }
 );
 /* eslint-enable global-require */
@@ -89,7 +90,7 @@ describe('Remind Command', () => {
       });
 
       it('returns successful reminder creation message', () => {
-	      return subject(msg, reminder).then((res) => {
+        return subject(msg, reminder).then((res) => {
           expect(res).to.contain(`will be reminded "This is a test reminder"`);
         });
       });
