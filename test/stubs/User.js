@@ -1,7 +1,7 @@
 const User = {
   send: (msg) => {
     this.msg = msg;
-    return User;
+    return msg;
   }
 };
 

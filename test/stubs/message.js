@@ -4,7 +4,8 @@ const commandoMsg = {
   message: {
     author: {
       username: 'test_user',
-      discriminator: '1234'
+      discriminator: '1234',
+      id: '123456789'
     }
   }
 };

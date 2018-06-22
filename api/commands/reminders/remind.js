@@ -1,11 +1,9 @@
-require('../../queue/process.js');
-
-const { Command } = require('discord.js-commando');
-const chrono      = require('chrono-node');
-const addToQueue  = require('../../queue/add.js');
-const exceptions  = require('../../util/exceptions.json');
-const selectTz    = require('../../../db/queries/selectTimezone.js');
-const parseDate   = require('../../util/translateDatetime.js');
+const { Command }   = require('discord.js-commando');
+const chrono        = require('chrono-node');
+const exceptions    = require('../../util/exceptions.json');
+const parseDate     = require('../../util/translateDatetime.js');
+const tzStore       = require('../../redis/client.js').timezones;
+const reminderStore = require('../../redis/client.js').reminders;
 
 const command = {
   name: 'remind',
@@ -41,34 +39,59 @@ module.exports = class RemindCommand extends Command {
   }
 
   run(msg, { target, content, datetime }) {
-    const author = {
-      username: msg.message.author.username,
-      discriminator: msg.message.author.discriminator
-    };
+    const { author } = msg.message;
 
-    let parsedTime;
+    let timezone;
+    let reminders = [];
+    let remindersJson;
+
+    // for handling of reminder object from RemindCommand test
+    if ((!target || !datetime) && content) {
+      target = content.target;
+      datetime = content.datetime;
+      content = content.content;
+    }
 
     if (!chrono.parseDate(datetime)) {
       return new Promise((resolve, reject) =>
         reject(msg.say(exceptions.invalid_datetime_format)));
     }
 
-    return selectTz([author.username, author.discriminator])
-    .then((timezone) => {
-      if (!timezone) {
+    return tzStore.getAsync(author.id)
+    .then((tz) => {
+      if (!tz) {
         return Promise.reject(msg.say(exceptions.timezone_not_set));
+      } else {
+        timezone = tz;
       }
-
-      parsedTime = parseDate(datetime, timezone);
+    })
+    .then(() => {
+      const parsedTime = parseDate(datetime, timezone);
 
       if (parsedTime.delayAmt < 500) {
         return Promise.reject(msg.say(exceptions.past_time));
       }
 
-      return addToQueue(target, content, parsedTime, author);
+      return reminderStore.getAsync(parsedTime.timeInMS)
+      .then((existingReminders) => {
+        if (existingReminders) {
+          reminders = JSON.parse(existingReminders);
+        }
+
+        reminders.push({
+          target: target.id,
+          parsedTime: parsedTime.parsed,
+          content
+        });
+
+        remindersJson = JSON.stringify(reminders);
+      })
+      .then(() => reminderStore.setAsync(parsedTime.timeInMS, remindersJson))
+      .then(() => msg.direct(
+        `${parsedTime.parsed}, ${target} will be reminded "${content}"`
+      ))
+      .catch(err => console.error(err.stack));
     })
-    .then(() => msg.direct(
-      `${parsedTime.parsed}, ${target} will be reminded "${content}"`
-    ));
+    .catch(err => console.error(err.stack));
   }
 };
