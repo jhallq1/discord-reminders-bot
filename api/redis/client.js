@@ -6,8 +6,7 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 
 const connection = {
   port: keys.redisPort,
-  host: keys.redisHost,
-  password: keys.redisKey
+  host: keys.redisHost
 };
 
 module.exports = {
