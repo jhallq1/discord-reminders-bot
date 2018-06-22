@@ -1,5 +1,7 @@
-/* global describe before after context it */
+/* global describe beforeEach context it */
+
 require('./helper.js');
+
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const moment     = require('moment');
