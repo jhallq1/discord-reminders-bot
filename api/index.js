@@ -4,7 +4,7 @@ const remindersClient = require('./redis/client.js').reminders;
 const timezonesClient = require('./redis/client.js').timezones;
 const keys = require('./keys.json');
 
-const initialize_bot = () => {
+const initializeBot = () => {
   bot.registry
   .registerGroups([
     ['reminders', 'Reminders'],
@@ -24,7 +24,7 @@ const initialize_bot = () => {
 
 remindersClient.on('connect', () => {
   remindersClient.select(0);
-  initialize_bot();
+  initializeBot();
   require('./redis/processReminders.js');
 });
 
