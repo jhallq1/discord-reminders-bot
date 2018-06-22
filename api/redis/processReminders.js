@@ -23,7 +23,7 @@ const getReminders = (expiredTimestampsArray) => {
   let remindersToGet = [];
   let timestampsToClear = [];
 
-  expiredTimestampsArray.map((timestamp) => {
+  expiredTimestampsArray.forEach((timestamp) => {
     if (!timestampsToClear.includes(timestamp)) {
       timestampsToClear.push(timestamp);
     }
@@ -51,21 +51,21 @@ const sendReminders = (remindersArray, timestampsToClearArray) => {
 const processReminders = () => {
   return scanReminderStore().then((allTimestamps) => {
     if (allTimestamps.length > 0) {
-      let expiredTimestamps = getExpiredTimestamps(allTimestamps);
+      const expiredTimestamps = getExpiredTimestamps(allTimestamps);
 
       return getReminders(expiredTimestamps).then((res) => {
-        sendReminders(res[0], res[1]);
+        sendReminders(...res);
       });
     }
   });
 };
 
 module.exports = {
-  scanReminderStore: scanReminderStore,
-  getExpiredTimestamps: getExpiredTimestamps,
-  sendReminders: sendReminders,
-  getReminders: getReminders,
-  processReminders: processReminders
+  scanReminderStore,
+  getExpiredTimestamps,
+  sendReminders,
+  getReminders,
+  processReminders
 };
 
 setInterval(processReminders, 10000);
