@@ -25,4 +25,4 @@ currently in development. Thank you for your patience.
  - `npm start`
 
 ## Testing
-To run the tests, you will need to start up a local Redis server.
+To run the tests, a local Redis server must be running.
