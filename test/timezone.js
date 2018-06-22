@@ -1,4 +1,5 @@
 /* global describe beforeEach context it */
+require('./helper.js');
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const msg        = require('./stubs/message.js');
@@ -39,8 +40,8 @@ describe('Timezone Command', () => {
       expect(res).to.eq(expectedSuccessMsg);
     }));
 
-    after(() => {
-      tzStore.flushallAsync();
-    })
+    // after(() => {
+    //   tzStore.flushallAsync();
+    // })
   });
 });

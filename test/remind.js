@@ -1,4 +1,5 @@
 /* global describe before after context it */
+require('./helper.js');
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const tzStore    = require('../api/redis/client.js').timezones;
@@ -92,10 +93,10 @@ describe('Remind Command', () => {
         });
       });
 
-      after(() => {
-        tzStore.flushallAsync();
-        reminders.flushallAsync();
-      });
+      // after(() => {
+      //   tzStore.flushallAsync();
+      //   reminders.flushallAsync();
+      // });
     });
   });
 });

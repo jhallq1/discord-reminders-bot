@@ -1,4 +1,5 @@
 /* global describe before after context it */
+require('./helper.js');
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const moment     = require('moment');
@@ -33,14 +34,13 @@ describe('Process Reminders', () => {
   const inFiveMinutes = (moment().valueOf() + 300000);
 
   context('there are reminders ready for processing', () => {
-    before(() => {
+    beforeEach(() => {
       reminders.setAsync(inFiveSeconds, JSON.stringify(readyReminder));
       reminders.setAsync(inFiveMinutes, JSON.stringify(notReadyReminder));
     });
 
     it('retrieves all pending reminders', () => {
       return subject.scanReminderStore().then((res) => {
-        console.log(res);
         expect(res.length).to.eq(2);
         expect(res).to.include(inFiveSeconds.toString());
         expect(res).to.include(inFiveMinutes.toString());
@@ -59,9 +59,9 @@ describe('Process Reminders', () => {
       });
     });
 
-    after(() => {
-      reminders.flushallAsync();
-      tzStore.flushallAsync();
-    });
+    // after(() => {
+    //   reminders.flushallAsync();
+    //   tzStore.flushallAsync();
+    // });
   });
 });
