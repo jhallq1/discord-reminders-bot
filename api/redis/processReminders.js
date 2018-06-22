@@ -32,7 +32,13 @@ const getReminders = (expiredTimestampsArray) => {
   });
 
   return Promise.all(remindersToGet).then((reminders) => {
-    return [JSON.parse(reminders), timestampsToClear];
+    let remindersToSend = [];
+
+    if (reminders.length > 0) {
+      remindersToSend = JSON.parse(reminders);
+    }
+
+    return [remindersToSend, timestampsToClear];
   });
 };
 
@@ -54,7 +60,9 @@ const processReminders = () => {
       const expiredTimestamps = getExpiredTimestamps(allTimestamps);
 
       return getReminders(expiredTimestamps).then((res) => {
-        sendReminders(...res);
+        if (res[0].length > 0) {
+          sendReminders(...res);
+        }
       });
     }
   });

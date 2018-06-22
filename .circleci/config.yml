@@ -19,7 +19,7 @@ jobs:
       - 
         run:
           name: Wait for Redis to receive connections
-          command: dockerize -wait tcp://localhost:6379 -timeout 1m
+          command: dockerize -wait tcp://127.0.0.1:6379 -timeout 1m
       -
         run: "npm run test"
       -
