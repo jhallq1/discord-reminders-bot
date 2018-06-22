@@ -92,11 +92,6 @@ describe('Remind Command', () => {
           expect(res).to.contain(`will be reminded "This is a test reminder"`);
         });
       });
-
-      // after(() => {
-      //   tzStore.flushallAsync();
-      //   reminders.flushallAsync();
-      // });
     });
   });
 });

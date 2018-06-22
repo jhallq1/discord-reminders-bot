@@ -58,10 +58,5 @@ describe('Process Reminders', () => {
         expect(res[1][0]).to.eq(inFiveSeconds);
       });
     });
-
-    // after(() => {
-    //   reminders.flushallAsync();
-    //   tzStore.flushallAsync();
-    // });
   });
 });

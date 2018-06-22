@@ -39,9 +39,5 @@ describe('Timezone Command', () => {
     ).then((res) => {
       expect(res).to.eq(expectedSuccessMsg);
     }));
-
-    // after(() => {
-    //   tzStore.flushallAsync();
-    // })
   });
 });
