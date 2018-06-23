@@ -1,6 +1,6 @@
 {
-  "owner":     "a",
-  "token":     "b",
-  "redisHost": "123.123.123.123",
-  "redisPort": "1234"
+  "owner": "a",
+  "token": "b",
+  "host":  "",
+  "port":  ""
 }
