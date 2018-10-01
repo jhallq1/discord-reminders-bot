@@ -33,13 +33,13 @@ const getReminders = (expiredTimestampsArray) => {
 
   return Promise.all(remindersToGet).then((reminders) => {
     let remindersToSend = [];
-    let tempArray;
 
     if (reminders.length > 0) {
-      reminders.forEach((item) => {
-        tempArray = JSON.parse(item);
-        tempArray.forEach((tempItem) => {
-          remindersToSend.push(tempItem);
+      reminders.forEach((arrayOfReminders) => {
+        let parsedArrayOfReminders = JSON.parse(arrayOfReminders);
+
+        parsedArrayOfReminders.forEach((parsedReminder) => {
+          remindersToSend.push(parsedReminder);
         });
       })
     }
