@@ -19,20 +19,20 @@
   },
   "homepage": "https://github.com/jnhallquist/discord-reminders-bot#readme",
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "chai": "^4.1.2",
+    "bluebird": "^3.5.2",
+    "chai": "^4.2.0",
     "chrono-node": "^1.3.5",
-    "discord.js": "^11.3.2",
+    "discord.js": "^11.4.2",
     "discord.js-commando": "^0.10.0",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.17",
+    "moment-timezone": "^0.5.21",
     "path": "^0.12.7",
     "redis": "^2.8.0",
-    "semver": "^5.5.0"
+    "semver": "^5.5.1"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "proxyquire": "^2.0.1"
+    "proxyquire": "^2.1.0"
   },
   "engines": {
     "node": ">= 8.0.0"
