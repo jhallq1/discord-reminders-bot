@@ -62,10 +62,12 @@ const sendReminders = (remindersArray, timestampsToClearArray) => {
 
 const processReminders = () => {
   return scanReminderStore().then((allTimestamps) => {
+    console.log(1, allTimestamps);
     if (allTimestamps.length > 0) {
       const expiredTimestamps = getExpiredTimestamps(allTimestamps);
-
+      console.log(2, expiredTimestamps);
       return getReminders(expiredTimestamps).then((res) => {
+        console.log(3, res);
         if (res[0].length > 0) {
           sendReminders(...res);
         }
