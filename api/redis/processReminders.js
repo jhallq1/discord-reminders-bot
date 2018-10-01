@@ -35,8 +35,9 @@ const getReminders = (expiredTimestampsArray) => {
     let remindersToSend = [];
 
     if (reminders.length > 0) {
-      reminders.forEach(arrayOfReminders =>
-        remindersToSend.push(...JSON.parse(arrayOfReminders)));
+      reminders.forEach((arrayOfReminders) => {
+        remindersToSend.push(...JSON.parse(arrayOfReminders));
+      });
     }
 
     return [remindersToSend, timestampsToClear];
