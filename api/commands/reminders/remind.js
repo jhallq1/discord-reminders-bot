@@ -79,6 +79,7 @@ module.exports = class RemindCommand extends Command {
         }
 
         reminders.push({
+          author: author.id,
           target: target.id,
           parsedTime: parsedTime.parsed,
           content
