@@ -1,4 +1,4 @@
-# Discord Reminders Bot
+# Discord Reminders Bot [![Maintainability](https://api.codeclimate.com/v1/badges/ec4001a1c49ca96af0c0/maintainability)](https://codeclimate.com/github/jnhallquist/discord-reminders-bot/maintainability)
 This is a bot for use with the [Discord](https://discordapp.com/) voice and
 text chat platform. When added to a Discord server, users will be able to set
 and receive reminders.
