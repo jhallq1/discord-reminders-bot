@@ -1,14 +1,7 @@
-# Discord Reminders Bot
+# Discord Reminders Bot [![Maintainability](https://api.codeclimate.com/v1/badges/ec4001a1c49ca96af0c0/maintainability)](https://codeclimate.com/github/jnhallquist/discord-reminders-bot/maintainability) [![CircleCI](https://circleci.com/gh/jnhallquist/discord-reminders-bot.svg?style=svg)](https://circleci.com/gh/jnhallquist/discord-reminders-bot)
 This is a bot for use with the [Discord](https://discordapp.com/) voice and
 text chat platform. When added to a Discord server, users will be able to set
 and receive reminders.
-
-This bot uses an NLP engine to parse the date and time of reminder requests.
-Unfortunately, this engine may not parse the dates/times with 100% accuracy.
-I will be working on improving the NLP in future releases.
-
-Additionally, the user's abilities to modify and cancel reminders are
-currently in development. Thank you for your patience.
 
 ## Features
 - [x] Set and receive reminders for self or other users
