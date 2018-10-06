@@ -129,7 +129,7 @@ describe('Remind Command', () => {
         let allReminders = JSON.parse(oldReminders)
         allReminders.push(newReminder);
 
-        res = [parseDate.timeInMS, JSON.stringify(allReminders)];
+        res = [msg.message.author.id, JSON.stringify(allReminders)];
 
         await subject(msg, reminder);
       };

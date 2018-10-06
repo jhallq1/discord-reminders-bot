@@ -40,7 +40,7 @@ module.exports = class RemindCommand extends Command {
 
   async run(msg, { target, content, datetime }) {
     const { author } = msg.message;
-
+    
     let timezone;
     let reminders = [];
     let remindersJson;
