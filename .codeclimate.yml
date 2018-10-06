@@ -15,3 +15,5 @@ exclude_patterns:
 checks:
   method-lines:
     enabled: false
+  method-complexity:
+    enabled: false

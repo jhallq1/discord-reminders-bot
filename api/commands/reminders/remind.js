@@ -38,7 +38,7 @@ module.exports = class RemindCommand extends Command {
     super(client, command);
   }
 
-  run(msg, { target, content, datetime }) {
+  async run(msg, { target, content, datetime }) {
     const { author } = msg.message;
 
     let timezone;
@@ -52,47 +52,47 @@ module.exports = class RemindCommand extends Command {
       content = content.content;
     }
 
-    if (!chrono.parseDate(datetime)) {
-      return new Promise((resolve, reject) =>
-        reject(msg.say(exceptions.invalid_datetime_format)));
-    }
+    try {
+      if (!chrono.parseDate(datetime)) {
+        return msg.say(exceptions.invalid_datetime_format);
+      }
 
-    return tzStore.getAsync(author.id)
-    .then((tz) => {
+      let tz = await tzStore.getAsync(author.id);
+
       if (!tz) {
-        return Promise.reject(msg.say(exceptions.timezone_not_set));
+        return msg.say(exceptions.timezone_not_set);
       } else {
         timezone = tz;
       }
-    })
-    .then(() => {
+
       const parsedTime = parseDate(datetime, timezone);
 
       if (parsedTime.delayAmt < 500) {
-        return Promise.reject(msg.say(exceptions.past_time));
+        return msg.say(exceptions.past_time);
       }
 
-      return reminderStore.getAsync(parsedTime.timeInMS)
-      .then((existingReminders) => {
-        if (existingReminders) {
-          reminders = JSON.parse(existingReminders);
-        }
+      const existingReminders = await reminderStore.getAsync(
+        parsedTime.timeInMS
+      );
 
-        reminders.push({
-          author: author.id,
-          target: target.id,
-          parsedTime: parsedTime.parsed,
-          content
-        });
+      if (existingReminders) {
+        reminders = JSON.parse(existingReminders);
+      }
 
-        remindersJson = JSON.stringify(reminders);
-      })
-      .then(() => reminderStore.setAsync(parsedTime.timeInMS, remindersJson))
-      .then(() => msg.direct(
+      reminders.push({
+        target: target.id,
+        parsedTime: parsedTime.parsed,
+        content
+      });
+
+      remindersJson = JSON.stringify(reminders);
+
+      await reminderStore.setAsync(parsedTime.timeInMS, remindersJson);
+      await msg.direct(
         `${parsedTime.parsed}, ${target} will be reminded "${content}"`
-      ))
-      .catch(err => console.error(err.stack));
-    })
-    .catch(err => console.error(err.stack));
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 };

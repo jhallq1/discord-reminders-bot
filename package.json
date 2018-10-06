@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "proxyquire": "^2.1.0"
+    "proxyquire": "^2.1.0",
+    "sinon": "^6.3.5"
   },
   "engines": {
     "node": ">= 8.0.0"
