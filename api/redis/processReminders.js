@@ -1,4 +1,7 @@
+const moment = require('moment-timezone');
+
 const reminderStore = require('./client.js').reminders;
+const tzStore = require('./client.js').timezones;
 const bot = require('../bot.js');
 
 const scanReminderStore = () => {
@@ -17,6 +20,20 @@ const getExpiredTimestamps = (timestampsArray) => {
   });
 
   return expiredTimestamps;
+};
+
+const getExpiredReminders = (allAuthorIds) => {
+  let timeInAuthorTz;
+
+  allAuthorIds.forEach((id) => {
+    return tzStore.getAsync(id).then((timezone) => {
+      timeInAuthorTz = moment().tz(timezone).valueOf();
+
+      return reminderStore.getAsync(id).then((reminders) => {
+        console.log(reminders)
+      });
+    });
+  });
 };
 
 const getReminders = (expiredTimestampsArray) => {
@@ -57,15 +74,15 @@ const sendReminders = (remindersArray, timestampsToClearArray) => {
 };
 
 const processReminders = () => {
-  return scanReminderStore().then((allTimestamps) => {
-    if (allTimestamps.length > 0) {
-      const expiredTimestamps = getExpiredTimestamps(allTimestamps);
+  return scanReminderStore().then((authorIds) => {
+    if (authorIds.length > 0) {
+      const expiredReminders = getExpiredReminders(authorIds);
 
-      return getReminders(expiredTimestamps).then((res) => {
-        if (res[0].length > 0) {
-          sendReminders(...res);
-        }
-      });
+      // return getReminders(expiredTimestamps).then((res) => {
+      //   if (res[0].length > 0) {
+      //     sendReminders(...res);
+      //   }
+      // });
     }
   });
 };
