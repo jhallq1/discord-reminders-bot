@@ -1,7 +1,5 @@
 /* global describe beforeEach afterEach context it */
 
-require('../../helper.js');
-
 const proxyquire    = require('proxyquire').noCallThru();
 const { expect }    = require('chai');
 const sinon         = require('sinon');
