@@ -4,94 +4,54 @@ const reminderStore = require('./client.js').reminders;
 const tzStore = require('./client.js').timezones;
 const bot = require('../bot.js');
 
-const scanReminderStore = () => {
-  return reminderStore.scanAsync(0).then((data) => {
-    return data[1];
-  });
-};
+const processReminders = async () => {
+  let reminders;
+  let indexesOfElementsToRemove;
+  let expiredReminders;
+  let user;
 
-const getExpiredTimestamps = (timestampsArray) => {
-  const expiredTimestamps = [];
+  try {
+    const authorIds = (await reminderStore.scanAsync(0))[1];
 
-  timestampsArray.forEach((timestamp) => {
-    if (timestamp < Date.now()) {
-      expiredTimestamps.push(timestamp);
-    }
-  });
-
-  return expiredTimestamps;
-};
-
-const getExpiredReminders = (allAuthorIds) => {
-  let timeInAuthorTz;
-
-  allAuthorIds.forEach((id) => {
-    return tzStore.getAsync(id).then((timezone) => {
-      timeInAuthorTz = moment().tz(timezone).valueOf();
-
-      return reminderStore.getAsync(id).then((reminders) => {
-        console.log(reminders)
-      });
-    });
-  });
-};
-
-const getReminders = (expiredTimestampsArray) => {
-  let remindersToGet = [];
-  let timestampsToClear = [];
-
-  expiredTimestampsArray.forEach((timestamp) => {
-    if (!timestampsToClear.includes(timestamp)) {
-      timestampsToClear.push(timestamp);
-    }
-
-    remindersToGet.push(reminderStore.getAsync(timestamp));
-  });
-
-  return Promise.all(remindersToGet).then((reminders) => {
-    let remindersToSend = [];
-
-    if (reminders.length > 0) {
-      reminders.forEach((arrayOfReminders) => {
-        remindersToSend.push(...JSON.parse(arrayOfReminders));
-      });
-    }
-
-    return [remindersToSend, timestampsToClear];
-  });
-};
-
-const sendReminders = (remindersArray, timestampsToClearArray) => {
-  remindersArray.forEach((reminder) => {
-    bot.fetchUser(reminder.target).then((user) => {
-      return user.send(reminder.content);
-    });
-  });
-
-  timestampsToClearArray.forEach((timestamp) => {
-    reminderStore.del(timestamp);
-  });
-};
-
-const processReminders = () => {
-  return scanReminderStore().then((authorIds) => {
     if (authorIds.length > 0) {
-      const expiredReminders = getExpiredReminders(authorIds);
+      authorIds.forEach(async (id) => {
+        const authorTz = await tzStore.getAsync(id);
+        const timeInAuthorTz = moment().tz(authorTz).valueOf();
 
-      // return getReminders(expiredTimestamps).then((res) => {
-      //   if (res[0].length > 0) {
-      //     sendReminders(...res);
-      //   }
-      // });
+        reminders = JSON.parse(await reminderStore.getAsync(id));
+
+        if (reminders.length > 0) {
+          indexesOfElementsToRemove = [];
+          expiredReminders = [];
+
+          for (let i = 0; i < reminders.length; i++) {
+            if (reminders[i].parsedTime.timeInMS < timeInAuthorTz) {
+              indexesOfElementsToRemove.push(i);
+              expiredReminders.push(reminders[i]);
+            }
+          }
+        }
+
+        if (expiredReminders.length > 0) {
+          expiredReminders.forEach(async (reminder) => {
+            user = await bot.fetchUser(reminder.target);
+            user.send(reminder.content);
+          });
+
+          indexesOfElementsToRemove.forEach((idx) => {
+            reminders.splice(idx, 1);
+          });
+
+          await reminderStore.setAsync(id, JSON.stringify(reminders));
+        }
+      });
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
-  scanReminderStore,
-  getExpiredTimestamps,
-  sendReminders,
-  getReminders,
   processReminders
 };
 
