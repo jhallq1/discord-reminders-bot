@@ -72,7 +72,7 @@ module.exports = class RemindCommand extends Command {
       }
 
       const existingReminders = await reminderStore.getAsync(
-        parsedTime.timeInMS
+        author.id
       );
 
       if (existingReminders) {
@@ -82,12 +82,13 @@ module.exports = class RemindCommand extends Command {
       reminders.push({
         target: target.id,
         parsedTime: parsedTime.parsed,
-        content
+        content,
+        parsedTime
       });
 
       remindersJson = JSON.stringify(reminders);
 
-      await reminderStore.setAsync(parsedTime.timeInMS, remindersJson);
+      await reminderStore.setAsync(author.id, remindersJson);
       await msg.direct(
         `${parsedTime.parsed}, ${target} will be reminded "${content}"`
       );
