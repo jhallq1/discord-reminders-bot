@@ -8,15 +8,14 @@ const processReminders = async () => {
   let reminders;
   let indexesOfElementsToRemove;
   let expiredReminders;
-  let user;
 
   try {
     const authorIds = (await reminderStore.scanAsync(0))[1];
 
     if (authorIds.length > 0) {
       authorIds.forEach(async (id) => {
-        const authorTz = await tzStore.getAsync(id);
-        const timeInAuthorTz = moment().tz(authorTz).valueOf();
+        let authorTz = await tzStore.getAsync(id);
+        let timeInAuthorTz = moment().tz(authorTz).valueOf();
 
         reminders = JSON.parse(await reminderStore.getAsync(id));
 
@@ -34,7 +33,7 @@ const processReminders = async () => {
 
         if (expiredReminders.length > 0) {
           expiredReminders.forEach(async (reminder) => {
-            user = await bot.fetchUser(reminder.target);
+            let user = await bot.fetchUser(reminder.target);
             user.send(reminder.content);
           });
 
@@ -42,7 +41,11 @@ const processReminders = async () => {
             reminders.splice(idx, 1);
           });
 
-          await reminderStore.setAsync(id, JSON.stringify(reminders));
+          if (reminders.length == 0) {
+            await reminderStore.delAsync(id);
+          } else {
+            await reminderStore.setAsync(id, JSON.stringify(reminders));
+          }
         }
       });
     }
