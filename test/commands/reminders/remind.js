@@ -5,16 +5,16 @@ require('../../helper.js');
 const proxyquire    = require('proxyquire').noCallThru();
 const { expect }    = require('chai');
 const sinon         = require('sinon');
-const tzStore       = require('../../../api/redis/client.js').timezones;
-const reminderStore = require('../../../api/redis/client.js').reminders;
+const tzStore       = require('../../../redis/client.js').timezones;
+const reminderStore = require('../../../redis/client.js').reminders;
 const msg           = require('../../stubs/message.js');
-const exceptions    = require('../../../api/util/exceptions.json');
+const exceptions    = require('../../../util/exceptions.json');
 
 let parseDate = { parsed: 'parsed', delayAmt: 600, timeInMS: 100 };
 
 /* eslint-disable global-require */
 const RemindCommand = proxyquire(
-  '../../../api/commands/reminders/remind.js',
+  '../../../commands/reminders/remind.js',
   {
     'discord.js-commando': require('../../stubs/Command.js'),
     '../../bot.js': new (require('../../stubs/CommandoClient.js').CommandoClient)(),

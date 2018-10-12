@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const fn = require('../../api/util/translateDatetime.js');
+const fn = require('../../util/translateDatetime.js');
 
 const roundTimestampToDay = (input, timezone) => Math.round(fn(input, timezone)
 .delayAmt / 100000) * 100000;
