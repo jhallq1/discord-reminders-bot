@@ -5,12 +5,12 @@ require('../../helper.js');
 const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const msg        = require('../../stubs/message.js');
-const exceptions = require('../../../api/util/exceptions.json');
-const tzStore    = require('../../../api/redis/client.js').timezones;
+const exceptions = require('../../../util/exceptions.json');
+const tzStore    = require('../../../redis/client.js').timezones;
 
 /* eslint-disable global-require */
 const TimezoneCommand = proxyquire(
-  '../../../api/commands/misc/timezone.js',
+  '../../../commands/misc/timezone.js',
   {
     'discord.js-commando': require('../../stubs/Command.js'),
     '../../bot.js': new (require('../../stubs/CommandoClient.js').CommandoClient)()

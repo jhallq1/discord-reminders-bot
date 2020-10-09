@@ -6,12 +6,12 @@ const proxyquire = require('proxyquire').noCallThru();
 const { expect } = require('chai');
 const moment     = require('moment');
 const msg        = require('./../stubs/message.js');
-const tzStore    = require('../../api/redis/client.js').timezones;
-const reminders  = require('../../api/redis/client.js').reminders;
+const tzStore    = require('../../redis/client.js').timezones;
+const reminders  = require('../../redis/client.js').reminders;
 
 /* eslint-disable global-require */
 const subject = proxyquire(
-  '../../api/redis/processReminders.js',
+  '../../redis/processReminders.js',
   {
     // 'discord.js-commando': require('./stubs/Command.js'),
     './../bot.js': new (require('./../stubs/CommandoClient.js').CommandoClient)()
