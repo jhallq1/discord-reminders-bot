@@ -33,7 +33,7 @@ jobs:
         with:
           redis-version: 6
       - name: Create keys.json
-        run: cp .keys.json keys.json
+        run: cp ".keys.json" "keys.json"
       - name: Run tests
         run: yarn run test
         env: |
