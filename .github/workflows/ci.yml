@@ -34,6 +34,6 @@ jobs:
           redis-version: 6
       - name: Run tests
         run: yarn run test
-        env:
+        env: |
           - OWNER: ${{ secrets.owner }}
           - TOKEN: ${{ secrets.token }}
