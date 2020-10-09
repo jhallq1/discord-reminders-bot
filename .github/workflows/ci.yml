@@ -35,5 +35,5 @@ jobs:
       - name: Run tests
         run: yarn run test
         env: |
-          - OWNER: ${{ secrets.owner }}
-          - TOKEN: ${{ secrets.token }}
+          owner: ${{ secrets.owner }}
+          token: ${{ secrets.token }}
