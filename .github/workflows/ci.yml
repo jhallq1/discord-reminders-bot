@@ -31,6 +31,6 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.1.0
         with:
-          redis-version: ${{ matrix.redis-version }}
+          redis-version: 6
       - name: Run tests
         run: yarn run test
