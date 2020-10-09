@@ -32,8 +32,10 @@ jobs:
         uses: supercharge/redis-github-action@1.1.0
         with:
           redis-version: 6
+      - name: Create keys.json
+        run: cp ".keys.json" "keys.json"
       - name: Run tests
         run: yarn run test
-        env:
-          - OWNER: ${{ secrets.owner }}
-          - TOKEN: ${{ secrets.token }}
+        env: |
+          owner: ${{ secrets.owner }}
+          token: ${{ secrets.token }}
