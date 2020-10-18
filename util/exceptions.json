@@ -1,7 +1,7 @@
 {
-  "invalid_datetime_format": "Error! Please use the `rbot help set` command to view accepted datetime formats.",
+  "invalid_datetime_format": "Invalid datetime format was used. Please use the `rbot help set` command to view accepted datetime formats.",
   "past_time": "Error! You cannot schedule a reminder for the past.",
-  "timezone_not_set": "Error! You must first set your timezone in order to schedule reminders. Please use the `rbot help timezone` command to learn how.",
-  "invalid_timezone": "Error! Please try again using a valid timezone in the format of `America/Los_Angeles`. Please refer to `https://en.wikipedia.org/wiki/List_of_tz_database_time_zones` for a list of acceptable zones.",
-  "queue_save": "Kue Exception: Failed during save"
+  "timezone_not_set": "You must first set your timezone in order to schedule reminders. Please use the `rbot help timezone` command to learn how. If you have set your timezone but are still seeing this error, please report this issue @ https://github.com/jnhallquist/discord-reminders-bot/issues",
+  "invalid_timezone": "Invalid timezone was submitted. Please try again using a valid timezone in the format of `America/Los_Angeles`. Please refer to `https://en.wikipedia.org/wiki/List_of_tz_database_time_zones` for a list of acceptable zones.",
+  "queue_save": "Kue Exception: Failed to add reminder to the queue."
 }
