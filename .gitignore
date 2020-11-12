@@ -8,4 +8,4 @@ keys.json
 *.rdb
 
 # Dot files
-.*
+.DS_STORE
